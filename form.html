@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Project Manager</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #222536;
+      --border: #2e3150;
+      --accent: #6c63ff;
+      --accent-light: #8b85ff;
+      --text: #e8e9f0;
+      --text-sub: #8b8fa8;
+      --danger: #ff5c5c;
+      --success: #4caf82;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 16px 80px;
+    }
+
+    /* ── Header ── */
+    header {
+      width: 100%;
+      max-width: 760px;
+      margin-bottom: 40px;
+    }
+    header .badge {
+      display: inline-block;
+      background: rgba(108,99,255,0.18);
+      color: var(--accent-light);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+    header p {
+      margin-top: 8px;
+      color: var(--text-sub);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── Step indicator ── */
+    .steps {
+      width: 100%;
+      max-width: 760px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 32px;
+      gap: 0;
+    }
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+    .step-circle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-sub);
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .step.active .step-circle {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 0 16px rgba(108,99,255,0.5);
+    }
+    .step.done .step-circle {
+      background: var(--success);
+      border-color: var(--success);
+      color: #fff;
+    }
+    .step-label {
+      font-size: 13px;
+      color: var(--text-sub);
+      font-weight: 500;
+    }
+    .step.active .step-label { color: var(--text); }
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      margin: 0 8px;
+    }
+
+    /* ── Card ── */
+    .card {
+      width: 100%;
+      max-width: 760px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      margin-bottom: 20px;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      background: rgba(108,99,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .card-desc {
+      font-size: 12px;
+      color: var(--text-sub);
+      margin-top: 2px;
+    }
+
+    /* ── Form elements ── */
+    .field { margin-bottom: 20px; }
+    .field:last-child { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-sub);
+      margin-bottom: 8px;
+      letter-spacing: 0.3px;
+    }
+    label span.req { color: var(--accent-light); margin-left: 3px; }
+
+    input[type="text"],
+    input[type="url"],
+    input[type="date"],
+    textarea,
+    select {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 14px;
+      padding: 11px 14px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      font-family: inherit;
+    }
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
+    }
+    input::placeholder, textarea::placeholder {
+      color: #4a4e6a;
+    }
+    select option { background: var(--surface2); }
+    textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+    /* ── Row ── */
+    .row { display: grid; gap: 16px; }
+    .row.col2 { grid-template-columns: 1fr 1fr; }
+    .row.col3 { grid-template-columns: 1fr 1fr 1fr; }
+
+    /* ── Tag input ── */
+    .tag-wrap {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      cursor: text;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      min-height: 44px;
+      align-items: center;
+    }
+    .tag-wrap:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
+    }
+    .tag {
+      background: rgba(108,99,255,0.2);
+      color: var(--accent-light);
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tag button {
+      background: none;
+      border: none;
+      color: var(--accent-light);
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+      padding: 0;
+      opacity: 0.7;
+    }
+    .tag button:hover { opacity: 1; }
+    .tag-input {
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-size: 13px;
+      flex: 1;
+      min-width: 100px;
+      padding: 2px 4px;
+    }
+    .tag-hint {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-top: 5px;
+    }
+
+    /* ── Soft skill checkboxes ── */
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .checkbox-group label {
+      margin: 0;
+      font-weight: 400;
+      color: var(--text);
+    }
+    .chip-check input { display: none; }
+    .chip-check span {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+      color: var(--text-sub);
+    }
+    .chip-check input:checked + span {
+      background: rgba(108,99,255,0.2);
+      border-color: var(--accent);
+      color: var(--accent-light);
+    }
+
+    /* ── Member card ── */
+    .member-list { display: flex; flex-direction: column; gap: 16px; }
+    .member-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      position: relative;
+    }
+    .member-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .member-num {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-light);
+      background: rgba(108,99,255,0.15);
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .btn-remove {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-sub);
+      font-size: 12px;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-remove:hover { border-color: var(--danger); color: var(--danger); }
+
+    /* ── Add member button ── */
+    .btn-add-member {
+      width: 100%;
+      background: none;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-sub);
+      font-size: 13px;
+      padding: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .btn-add-member:hover {
+      border-color: var(--accent);
+      color: var(--accent-light);
+      background: rgba(108,99,255,0.05);
+    }
+
+    /* ── Section divider ── */
+    .divider {
+      width: 100%;
+      max-width: 760px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 8px 0 20px;
+    }
+    .divider hr { flex: 1; border: none; border-top: 1px solid var(--border); }
+    .divider span { font-size: 12px; color: var(--text-sub); white-space: nowrap; }
+
+    /* ── Meeting minutes ── */
+    .meeting-card {
+      border-left: 3px solid var(--accent);
+    }
+    .meeting-list { display: flex; flex-direction: column; gap: 12px; }
+    .meeting-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+    }
+    .meeting-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .meeting-date {
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    /* ── Context upload ── */
+    .upload-zone {
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
+      padding: 24px;
+      text-align: center;
+      color: var(--text-sub);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .upload-zone:hover {
+      border-color: var(--accent);
+      background: rgba(108,99,255,0.04);
+    }
+    .upload-zone .icon { font-size: 28px; margin-bottom: 8px; }
+    .upload-zone p { margin-top: 4px; font-size: 12px; }
+    .upload-zone span { color: var(--accent-light); font-weight: 600; }
+
+    /* ── Submit button ── */
+    .btn-submit {
+      width: 100%;
+      max-width: 760px;
+      padding: 16px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .btn-submit:hover {
+      background: var(--accent-light);
+      box-shadow: 0 4px 24px rgba(108,99,255,0.4);
+      transform: translateY(-1px);
+    }
+    .btn-submit:active { transform: translateY(0); }
+
+    /* ── Info tip ── */
+    .tip {
+      background: rgba(108,99,255,0.08);
+      border: 1px solid rgba(108,99,255,0.2);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 12px;
+      color: var(--text-sub);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .tip .ti { flex-shrink: 0; color: var(--accent-light); }
+
+    @media (max-width: 580px) {
+      .row.col2, .row.col3 { grid-template-columns: 1fr; }
+      .card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge">✦ AI Project Manager</div>
+  <h1>새 프로젝트 시작하기</h1>
+  <p>팀원 정보와 프로젝트 개요를 입력하면 AI가 역할을 분석하고<br>태스크를 자동으로 배분해드립니다.</p>
+</header>
+
+<!-- Steps -->
+<div class="steps">
+  <div class="step active">
+    <div class="step-circle">1</div>
+    <div class="step-label">프로젝트 기본 정보</div>
+  </div>
+  <div class="step-line"></div>
+  <div class="step">
+    <div class="step-circle">2</div>
+    <div class="step-label">팀원 구성</div>
+  </div>
+  <div class="step-line"></div>
+  <div class="step">
+    <div class="step-circle">3</div>
+    <div class="step-label">추가 컨텍스트</div>
+  </div>
+</div>
+
+<form id="projectForm" autocomplete="off">
+
+  <!-- ── STEP 1: 프로젝트 기본 정보 ── -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📋</div>
+      <div>
+        <div class="card-title">프로젝트 기본 정보</div>
+        <div class="card-desc">무엇을 만들 것인지, 언제까지 완료해야 하는지 입력하세요</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>프로젝트 주제 <span class="req">*</span></label>
+      <input type="text" placeholder="예) AI 기반 프로젝트 매니징 시스템 개발" />
+    </div>
+
+    <div class="row col2">
+      <div class="field">
+        <label>마감 기한 <span class="req">*</span></label>
+        <input type="date" />
+      </div>
+      <div class="field">
+        <label>GitHub 프로젝트 레포지토리</label>
+        <input type="url" placeholder="https://github.com/org/repo" />
+      </div>
+    </div>
+
+    <div class="tip">
+      <span class="ti">💡</span>
+      GitHub 레포지토리를 연결하면 커밋 및 PR이 자동으로 진척도에 반영됩니다.
+    </div>
+  </div>
+
+  <!-- ── STEP 2: 팀원 구성 ── -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">👥</div>
+      <div>
+        <div class="card-title">팀원 구성</div>
+        <div class="card-desc">각 팀원의 기술 역량과 소프트 스킬을 입력하면 AI가 최적의 역할을 배분합니다</div>
+      </div>
+    </div>
+
+    <div class="member-list" id="memberList">
+
+      <!-- Member 1 -->
+      <div class="member-card">
+        <div class="member-card-header">
+          <span class="member-num">팀원 #1</span>
+          <button type="button" class="btn-remove">✕ 삭제</button>
+        </div>
+
+        <div class="row col2">
+          <div class="field">
+            <label>이름 <span class="req">*</span></label>
+            <input type="text" placeholder="홍길동" />
+          </div>
+          <div class="field">
+            <label>역할 <span class="req">*</span></label>
+            <select>
+              <option value="">역할 선택</option>
+              <option>Frontend</option>
+              <option>Backend</option>
+              <option>Fullstack</option>
+              <option>AI / ML</option>
+              <option>Designer</option>
+              <option>PM / 기획</option>
+              <option>DevOps</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>GitHub 링크</label>
+          <input type="url" placeholder="https://github.com/username" />
+        </div>
+
+        <div class="field">
+          <label>사용 언어 / 기술스택 <span class="req">*</span></label>
+          <div class="tag-wrap" id="techWrap1">
+            <input class="tag-input" placeholder="입력 후 Enter" data-target="techWrap1" />
+          </div>
+          <div class="tag-hint">예) Python, React, TypeScript, FastAPI — Enter로 추가</div>
+        </div>
+
+        <div class="field">
+          <label>기술 외 역량 (소프트 스킬)</label>
+          <div class="checkbox-group">
+            <label class="chip-check"><input type="checkbox" /><span>🎤 발표</span></label>
+            <label class="chip-check"><input type="checkbox" /><span>📝 문서 작성</span></label>
+            <label class="chip-check"><input type="checkbox" /><span>🖼 PPT 제작</span></label>
+            <label class="chip-check"><input type="checkbox" /><span>🎨 디자인</span></label>
+            <label class="chip-check"><input type="checkbox" /><span>🤝 팀 리딩</span></label>
+            <label class="chip-check"><input type="checkbox" /><span>🔍 리서치</span></label>
+            <label class="chip-check"><input type="checkbox" /><span>📊 데이터 분석</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Member 2 -->
+      <div class="member-card">
+        <div class="member-card-header">
+          <span class="member-num">팀원 #2</span>
+          <button type="button" class="btn-remove">✕ 삭제</button>
+        </div>
+        <div class="row col2">
+          <div class="field">
+            <label>이름 <span class="req">*</span></label>
+            <input type="text" placeholder="홍길동" />
+          </div>
+          <div class="field">
+            <label>역할 <span class="req">*</span></label>
+            <select>
+              <option value="">역할 선택</option>
+              <option>Frontend</option>
+              <option>Backend</option>
+              <option>Fullstack</option>
+              <option>AI / ML</option>
+              <option>Designer</option>
+              <option>PM / 기획</option>
+              <option>DevOps</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>GitHub 링크</label>
+          <input type="url" placeholder="https://github.com/username" />
+        </div>
+        <div class="field">
+          <label>사용 언어 / 기술스택 <span class="req">*</span></label>
+          <div class="tag-wrap" id="techWrap2">
+            <input class="tag-input" placeholder="입력 후 Enter" data-target="techWrap2" />
+          </div>
+          <div class="tag-hint">예) Python, React, TypeScript, FastAPI — Enter로 추가</div>
+        </div>
+        <div class="field">
+          <label>기술 외 역량 (소프트 스킬)</label>
+          <div class="checkbox-group">
+            <label class="chip-check"><input type="checkbox" /><span>🎤 발표</span></label>
+            <label class="chip-check"><input type="checkbox" /><span>📝 문서 작성</span></label>
+            <label class="chip-check"><input type="checkbox" /><span>🖼 PPT 제작</span></label>
+            <label class="chip-check"><input type="checkbox" /><span>🎨 디자인</span></label>
+            <label class="chip-check"><input type="checkbox" /><span>🤝 팀 리딩</span></label>
+            <label class="chip-check"><input type="checkbox" /><span>🔍 리서치</span></label>
+            <label class="chip-check"><input type="checkbox" /><span>📊 데이터 분석</span></label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <button type="button" class="btn-add-member" id="addMember">
+      ＋ 팀원 추가
+    </button>
+  </div>
+
+  <!-- ── STEP 3: 추가 컨텍스트 ── -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📎</div>
+      <div>
+        <div class="card-title">추가 컨텍스트 <span style="font-size:12px;font-weight:400;color:var(--text-sub);">(선택)</span></div>
+        <div class="card-desc">기획서, 제안서 등 AI 분석에 참고할 문서를 업로드하거나 직접 입력하세요</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>문서 업로드</label>
+      <div class="upload-zone">
+        <div class="icon">📄</div>
+        <div><span>클릭하여 파일 선택</span> 또는 드래그 앤 드롭</div>
+        <p>PDF, DOCX, TXT · 최대 10MB</p>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>자유 입력 컨텍스트</label>
+      <textarea rows="4" placeholder="기획 의도, 특별히 고려해야 할 사항, 기술적 제약 등을 자유롭게 입력하세요."></textarea>
+    </div>
+  </div>
+
+  <!-- ── 프로젝트 진행 중: 회의록 ── -->
+  <div class="divider">
+    <hr/>
+    <span>📌 프로젝트 진행 중 — 회의록</span>
+    <hr/>
+  </div>
+
+  <div class="card meeting-card">
+    <div class="card-header">
+      <div class="card-icon">🗒</div>
+      <div>
+        <div class="card-title">회의록 입력</div>
+        <div class="card-desc">회의 내용을 붙여넣으면 AI가 액션 아이템을 추출하고 담당자를 자동 배정합니다</div>
+      </div>
+    </div>
+
+    <div class="meeting-list" id="meetingList">
+      <div class="meeting-item">
+        <div class="meeting-item-header">
+          <span style="font-size:13px;font-weight:600;">회의 #1</span>
+          <input type="date" style="width:auto;padding:5px 10px;font-size:12px;" />
+        </div>
+        <textarea rows="5" placeholder="회의에서 논의된 내용을 자유롭게 붙여넣어 주세요.
+예)
+- 로그인 기능 구현 방향 논의 → 소셜 로그인(Google) 우선 적용
+- 칸반 보드 UI 초안 공유 → 다음 주 피드백 예정
+- API 명세서 작성 필요 → 담당자 미정"></textarea>
+        <div class="tip" style="margin-top:10px;">
+          <span class="ti">🤖</span>
+          제출 시 AI가 액션 아이템을 자동 추출하여 태스크 보드에 반영합니다.
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="btn-add-member" id="addMeeting">
+      ＋ 회의록 추가
+    </button>
+  </div>
+
+  <!-- Submit -->
+  <button type="submit" class="btn-submit">
+    <span>✦</span> AI 분석 시작하기
+  </button>
+
+</form>
+
+<script>
+  // ── Tag input ──
+  document.addEventListener('keydown', function(e) {
+    if (e.target.classList.contains('tag-input') && e.key === 'Enter') {
+      e.preventDefault();
+      const val = e.target.value.trim();
+      if (!val) return;
+      const wrap = e.target.closest('.tag-wrap');
+      const tag = document.createElement('div');
+      tag.className = 'tag';
+      tag.innerHTML = val + '<button type="button" onclick="this.parentElement.remove()">×</button>';
+      wrap.insertBefore(tag, e.target);
+      e.target.value = '';
+    }
+  });
+
+  // ── Add member ──
+  let memberCount = 2;
+  document.getElementById('addMember').addEventListener('click', function() {
+    memberCount++;
+    const wrapId = 'techWrap' + memberCount;
+    const card = document.createElement('div');
+    card.className = 'member-card';
+    card.innerHTML = `
+      <div class="member-card-header">
+        <span class="member-num">팀원 #${memberCount}</span>
+        <button type="button" class="btn-remove" onclick="this.closest('.member-card').remove()">✕ 삭제</button>
+      </div>
+      <div class="row col2">
+        <div class="field"><label>이름 <span class="req">*</span></label><input type="text" placeholder="홍길동" /></div>
+        <div class="field"><label>역할 <span class="req">*</span></label>
+          <select>
+            <option value="">역할 선택</option>
+            <option>Frontend</option><option>Backend</option><option>Fullstack</option>
+            <option>AI / ML</option><option>Designer</option><option>PM / 기획</option><option>DevOps</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>GitHub 링크</label><input type="url" placeholder="https://github.com/username" /></div>
+      <div class="field">
+        <label>사용 언어 / 기술스택 <span class="req">*</span></label>
+        <div class="tag-wrap" id="${wrapId}">
+          <input class="tag-input" placeholder="입력 후 Enter" data-target="${wrapId}" />
+        </div>
+        <div class="tag-hint">Enter로 추가</div>
+      </div>
+      <div class="field">
+        <label>기술 외 역량 (소프트 스킬)</label>
+        <div class="checkbox-group">
+          <label class="chip-check"><input type="checkbox"/><span>🎤 발표</span></label>
+          <label class="chip-check"><input type="checkbox"/><span>📝 문서 작성</span></label>
+          <label class="chip-check"><input type="checkbox"/><span>🖼 PPT 제작</span></label>
+          <label class="chip-check"><input type="checkbox"/><span>🎨 디자인</span></label>
+          <label class="chip-check"><input type="checkbox"/><span>🤝 팀 리딩</span></label>
+          <label class="chip-check"><input type="checkbox"/><span>🔍 리서치</span></label>
+          <label class="chip-check"><input type="checkbox"/><span>📊 데이터 분석</span></label>
+        </div>
+      </div>`;
+    document.getElementById('memberList').appendChild(card);
+  });
+
+  // ── Add meeting ──
+  let meetingCount = 1;
+  document.getElementById('addMeeting').addEventListener('click', function() {
+    meetingCount++;
+    const item = document.createElement('div');
+    item.className = 'meeting-item';
+    item.innerHTML = `
+      <div class="meeting-item-header">
+        <span style="font-size:13px;font-weight:600;">회의 #${meetingCount}</span>
+        <input type="date" style="width:auto;padding:5px 10px;font-size:12px;" />
+      </div>
+      <textarea rows="5" placeholder="회의 내용을 자유롭게 붙여넣어 주세요."></textarea>
+      <div class="tip" style="margin-top:10px;">
+        <span class="ti">🤖</span>
+        제출 시 AI가 액션 아이템을 자동 추출하여 태스크 보드에 반영합니다.
+      </div>`;
+    document.getElementById('meetingList').appendChild(item);
+  });
+
+  // ── Remove buttons (initial) ──
+  document.querySelectorAll('.btn-remove').forEach(btn => {
+    btn.addEventListener('click', function() {
+      this.closest('.member-card').remove();
+    });
+  });
+</script>
+
+</body>
+</html>
