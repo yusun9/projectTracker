@@ -1,0 +1,108 @@
+[debug] [2026-05-15T01:21:38.745Z] ----------------------------------------------------------------------
+[debug] [2026-05-15T01:21:38.749Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\jje49\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init
+[debug] [2026-05-15T01:21:38.749Z] CLI Version:   15.18.0
+[debug] [2026-05-15T01:21:38.750Z] Platform:      win32
+[debug] [2026-05-15T01:21:38.750Z] Node Version:  v22.18.0
+[debug] [2026-05-15T01:21:38.750Z] Time:          Fri May 15 2026 10:21:38 GMT+0900 (대한민국 표준시)
+[debug] [2026-05-15T01:21:38.750Z] ----------------------------------------------------------------------
+[debug] 
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\jje49\Desktop\2026-ProjectTracker
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] 
+[debug] [2026-05-15T01:21:57.556Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-05-15T01:21:57.556Z] > authorizing via signed-in user (jje49jieun@gmail.com)
+[debug] [2026-05-15T01:21:57.558Z] Checked if tokens are valid: true, expires at: 1778811096912
+[debug] [2026-05-15T01:21:57.558Z] Checked if tokens are valid: true, expires at: 1778811096912
+[debug] [2026-05-15T01:21:57.560Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects pageSize=100
+[debug] [2026-05-15T01:21:58.276Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects 200
+[debug] [2026-05-15T01:21:58.277Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects [omitted]
+[info] 
+=== Firestore Setup
+[info] i  firestore: ensuring required API firestore.googleapis.com is enabled... 
+[debug] [2026-05-15T01:22:00.392Z] Checked if tokens are valid: true, expires at: 1778811096912
+[debug] [2026-05-15T01:22:00.392Z] Checked if tokens are valid: true, expires at: 1778811096912
+[debug] [2026-05-15T01:22:00.393Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/projecttracker-3554a/databases [none]
+[debug] [2026-05-15T01:22:00.988Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/projecttracker-3554a/databases 200
+[debug] [2026-05-15T01:22:00.988Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/projecttracker-3554a/databases {"databases":[{"name":"projects/projecttracker-3554a/databases/(default)","uid":"f4f610ad-fb1a-4d50-9237-09c062a8f634","createTime":"2026-05-15T00:41:28.308178Z","updateTime":"2026-05-15T00:41:28.308178Z","locationId":"asia-northeast3","type":"FIRESTORE_NATIVE","concurrencyMode":"PESSIMISTIC","versionRetentionPeriod":"3600s","earliestVersionTime":"2026-05-15T00:41:28.308178Z","appEngineIntegrationMode":"DISABLED","keyPrefix":"v","pointInTimeRecoveryEnablement":"POINT_IN_TIME_RECOVERY_DISABLED","deleteProtectionState":"DELETE_PROTECTION_DISABLED","databaseEdition":"STANDARD","freeTier":true,"realtimeUpdatesMode":"REALTIME_UPDATES_MODE_ENABLED","etag":"IMTQstGQupQDMLyY5pOJupQD"}]}
+[info] 
+[info] Firestore Security Rules allow you to define how and when to allow
+[info] requests. You can keep these rules in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[debug] [2026-05-15T01:22:02.324Z] Checked if tokens are valid: true, expires at: 1778811096912
+[debug] [2026-05-15T01:22:02.325Z] Checked if tokens are valid: true, expires at: 1778811096912
+[debug] [2026-05-15T01:22:02.325Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/projecttracker-3554a/releases pageSize=10&pageToken=
+[debug] [2026-05-15T01:22:03.550Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/projecttracker-3554a/releases 200
+[debug] [2026-05-15T01:22:03.550Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/projecttracker-3554a/releases {"releases":[{"name":"projects/projecttracker-3554a/releases/cloud.firestore","rulesetName":"projects/projecttracker-3554a/rulesets/84b8780c-dfde-4fee-9541-b67dad9ced9d","createTime":"2026-05-15T00:41:32.381368Z","updateTime":"2026-05-15T00:41:32.381368Z"}]}
+[debug] [2026-05-15T01:22:03.551Z] Checked if tokens are valid: true, expires at: 1778811096912
+[debug] [2026-05-15T01:22:03.551Z] Checked if tokens are valid: true, expires at: 1778811096912
+[debug] [2026-05-15T01:22:03.551Z] >>> [apiv2][query] GET https://firebaserules.googleapis.com/v1/projects/projecttracker-3554a/rulesets/84b8780c-dfde-4fee-9541-b67dad9ced9d [none]
+[debug] [2026-05-15T01:22:04.639Z] <<< [apiv2][status] GET https://firebaserules.googleapis.com/v1/projects/projecttracker-3554a/rulesets/84b8780c-dfde-4fee-9541-b67dad9ced9d 200
+[debug] [2026-05-15T01:22:04.640Z] <<< [apiv2][body] GET https://firebaserules.googleapis.com/v1/projects/projecttracker-3554a/rulesets/84b8780c-dfde-4fee-9541-b67dad9ced9d [omitted]
+[info] i  Downloaded the existing Firestore Security Rules from the Firebase console 
+[info] 
+[info] Firestore indexes allow you to perform complex queries while
+[info] maintaining performance that scales with the size of the result
+[info] set. You can keep index definitions in your project directory
+[info] and publish them with firebase deploy.
+[info] 
+[debug] [2026-05-15T01:22:05.121Z] Checked if tokens are valid: true, expires at: 1778811096912
+[debug] [2026-05-15T01:22:05.122Z] Checked if tokens are valid: true, expires at: 1778811096912
+[debug] [2026-05-15T01:22:05.122Z] Checked if tokens are valid: true, expires at: 1778811096912
+[debug] [2026-05-15T01:22:05.122Z] Checked if tokens are valid: true, expires at: 1778811096912
+[debug] [2026-05-15T01:22:05.122Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/projecttracker-3554a/databases/(default)/collectionGroups/-/indexes [none]
+[debug] [2026-05-15T01:22:05.123Z] >>> [apiv2][query] GET https://firestore.googleapis.com/v1/projects/projecttracker-3554a/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* [none]
+[debug] [2026-05-15T01:22:05.221Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/projecttracker-3554a/databases/(default)/collectionGroups/-/indexes 200
+[debug] [2026-05-15T01:22:05.222Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/projecttracker-3554a/databases/(default)/collectionGroups/-/indexes {}
+[debug] [2026-05-15T01:22:05.227Z] <<< [apiv2][status] GET https://firestore.googleapis.com/v1/projects/projecttracker-3554a/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* 200
+[debug] [2026-05-15T01:22:05.227Z] <<< [apiv2][body] GET https://firestore.googleapis.com/v1/projects/projecttracker-3554a/databases/(default)/collectionGroups/-/fields?filter=indexConfig.usesAncestorConfig=false OR ttlConfig:* {"fields":[{"name":"projects/projecttracker-3554a/databases/(default)/collectionGroups/__default__/fields/*","indexConfig":{"indexes":[{"queryScope":"COLLECTION","fields":[{"fieldPath":"*","order":"ASCENDING"}],"state":"READY"},{"queryScope":"COLLECTION","fields":[{"fieldPath":"*","order":"DESCENDING"}],"state":"READY"},{"queryScope":"COLLECTION","fields":[{"fieldPath":"*","arrayConfig":"CONTAINS"}],"state":"READY"}]}}]}
+[info] i  Downloaded the existing Firestore indexes from the Firebase console 
+[info] +  Wrote firestore.rules 
+[info] +  Wrote firestore.indexes.json 
+[info] 
+=== Functions Setup
+[debug] [2026-05-15T01:22:05.235Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2026-05-15T01:22:05.236Z] > authorizing via signed-in user (jje49jieun@gmail.com)
+[debug] [2026-05-15T01:22:05.236Z] [iam] checking project projecttracker-3554a for permissions ["firebase.projects.get"]
+[debug] [2026-05-15T01:22:05.237Z] Checked if tokens are valid: true, expires at: 1778811096912
+[debug] [2026-05-15T01:22:05.237Z] Checked if tokens are valid: true, expires at: 1778811096912
+[debug] [2026-05-15T01:22:05.237Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/projecttracker-3554a:testIamPermissions [none]
+[debug] [2026-05-15T01:22:05.237Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/projecttracker-3554a:testIamPermissions  x-goog-user-project=projecttracker-3554a
+[debug] [2026-05-15T01:22:05.237Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/projecttracker-3554a:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2026-05-15T01:22:05.459Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/projecttracker-3554a:testIamPermissions 200
+[debug] [2026-05-15T01:22:05.459Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/projecttracker-3554a:testIamPermissions {"permissions":["firebase.projects.get"]}
+[info] Let's create a new codebase for your functions.
+[info] A directory corresponding to the codebase will be created in your project
+[info] with sample code pre-configured.
+
+[info] See https://firebase.google.com/docs/functions/organize-functions for
+[info] more information on organizing your functions using codebases.
+
+[info] Functions can be deployed with firebase deploy.
+
+[info] +  Wrote functions/requirements.txt 
+[info] +  Wrote functions/.gitignore 
+[info] +  Wrote functions/main.py 
+[debug] [2026-05-15T01:23:01.882Z] Running command with virtualenv: command="C:\Users\jje49\Desktop\2026-ProjectTracker\functions\venv\Scripts\activate.bat", args=["","&&","pip3","install","--upgrade","pip"]
+[debug] [2026-05-15T01:23:06.889Z] Error: spawn "C:\Users\jje49\Desktop\2026-ProjectTracker\functions\venv\Scripts\activate.bat" ENOENT
+    at notFoundError (C:\Users\jje49\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\cross-spawn\lib\enoent.js:6:26)
+    at verifyENOENT (C:\Users\jje49\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\cross-spawn\lib\enoent.js:40:16)
+    at cp.emit (C:\Users\jje49\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\cross-spawn\lib\enoent.js:27:25)
+    at ChildProcess._handle.onexit (node:internal/child_process:293:12)
+    at Process.callbackTrampoline (node:internal/async_hooks:130:17)
+[error] 
+[error] Error: An unexpected error has occurred.
