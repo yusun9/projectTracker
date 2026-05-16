@@ -1,0 +1,5048 @@
+{
+  "input": {
+    "github_profile_url": "https://github.com/EunjinLee08"
+  },
+  "user": {
+    "username": "EunjinLee08",
+    "name": "Entity08",
+    "bio": null,
+    "public_repos": 15,
+    "followers": 2,
+    "following": 3,
+    "created_at": "2024-11-14T05:41:43Z",
+    "updated_at": "2026-05-09T14:03:51Z"
+  },
+  "summary": {
+    "analyzed_repo_count": 10,
+    "total_languages_bytes": {
+      "Python": 45418,
+      "C": 3659,
+      "JavaScript": 24454,
+      "HTML": 24207,
+      "CSS": 2399,
+      "C++": 24091,
+      "CMake": 19716,
+      "Dart": 102735,
+      "Swift": 2488,
+      "Kotlin": 253,
+      "Objective-C": 76
+    },
+    "language_percentages": {
+      "Dart": 41.18,
+      "Python": 18.2,
+      "JavaScript": 9.8,
+      "HTML": 9.7,
+      "C++": 9.66,
+      "CMake": 7.9,
+      "C": 1.47,
+      "Swift": 1.0,
+      "CSS": 0.96,
+      "Kotlin": 0.1,
+      "Objective-C": 0.03
+    }
+  },
+  "repositories": [
+    {
+      "repo_name": "LLM_based_CVE_vuln_report",
+      "full_name": "EunjinLee08/LLM_based_CVE_vuln_report",
+      "html_url": "https://github.com/EunjinLee08/LLM_based_CVE_vuln_report",
+      "description": null,
+      "created_at": "2026-05-07T05:14:54Z",
+      "updated_at": "2026-05-11T05:20:22Z",
+      "pushed_at": "2026-05-11T05:20:18Z",
+      "stars": 0,
+      "forks": 0,
+      "watchers": 0,
+      "open_issues": 0,
+      "default_branch": "main",
+      "main_language": "Python",
+      "languages": {
+        "Python": 44647
+      },
+      "readme_summary_source": "# CVE Similarity Vulnerability Predictor\n\n이 프로젝트는 CVE/NVD에 이미 제보된 취약점 설명과, 선택적으로 별도 보관한 취약 코드 샘플을 근거로 대상 소스 코드의 유사 취약 후보를 예측합니다.\n\n## 구조\n\n- `project/src/collectors`: NVD와 GitHub 웹 URL에서 분석 근거를 수집\n- `project/src/parser`: NVD 응답을 공통 CVE 모델로 정규화\n- `project/src/retrieval`: CVE/취약 코드 샘플과 대상 코드의 유사도 계산\n- `project/src/llm`: Markdown 리포트 생성\n- `project/src/validation`: 입력값과 결과 검증\n- `project/reports`: 생성된 분석 리포트 저장\n\n## 로컬 소스 디렉터리 분석\n\n`--source-dir`에는 리포트 파일이 아니라 실제 `.c`, `.h`, `.cpp`, `.py` 같은 소스 파일이 들어 있어야 합니다.\n\n```powershell\ncd project\npython -m src.main \"openssl\" --source-dir reports --limit 20\n```\n\n## 이전 제보 취약 코드 샘플과 비교\n\n`--vuln-code-dir`에는 과거에 취약점으로 제보된 코드 파일을 넣습니다. 이 옵션을 주면 CVE 설명뿐 아니라 코드 대 코드 유사도도 함께 반영합니다.\n\n```powershell\ncd project\npython -m src.main \"modsecurity\" --source-dir reports --vuln-code-dir known_vulnerable_samples --limit 20\n```\n\n## Ollama qwen2.5-coder로 상위 후보 재판단\n\n기본 유사도 분석은 로컬에서 실행됩니다. `--use-llm`을 추가하면 유사도 상위 후보만 Ollama 모델에 보내서 실제 취약 가능성, 오탐 가능성, 확인 방법, 권장 조치를 재판단합니다.\n\n```powershell\ncd project\nollama pull qwen2.5-coder\npython -m src.main \"modsecurity\" --source-dir reports --limit 20 --max-findings 10 --use-llm --llm-max-findings 5\n```\n\n다른 Ollama 모델이나 URL을 쓰려면 환경 변수 또는 옵션으로 지정할 수 있습니다.\n\n```powershell\n$env:OLLAMA_MODEL=\"qwen2.5-coder\"\n$env:OLLAMA_URL=\"http://localhost:11434\"\npython -m src.main \"modsecurity\" --source-dir reports --use-llm --llm-model \"qwen2.5-coder\"\n```\n\nOpenAI를 쓰고 싶을 때만 선택적으로 `requirements.txt`를 설치하고 provider를 바꿉니다.\n\n```powershell\npip install -r requirements.txt\n$env:OPENAI_API_KEY=\"your-api-key\"\npython -m src.main \"modsecurity\" --source-dir reports --use-llm --llm-provider openai --llm-model \"gpt-4o\"\n```\n\n## GitHub URL을 바로 분석\n\nGitHub 파일, tree, repository URL을 넣으면 소스를 저장하지 않고 유사도 분석 리포트를 생성합니다. 키워드를 생략하면 GitHub 저장소 이름을 NVD 검색 키워드로 사용합니다.\n\n```powershell\ncd project\npython -m src.main \"openssl\" --github-url \"https://github.com/owner/repo/blob/main/src/app.c\"\npython -m src.main \"openssl\" --github-url \"https://github.com/owner/repo/tree/main/src",
+      "file_tree_sample": [
+        {
+          "path": "README.md",
+          "size": 3776
+        },
+        {
+          "path": "project/reports/.gitkeep",
+          "size": 1
+        },
+        {
+          "path": "project/reports/20260507_142913_openssl.md",
+          "size": 1751
+        },
+        {
+          "path": "project/reports/20260507_145629_modsecurity_similarity.md",
+          "size": 5212
+        },
+        {
+          "path": "project/reports/20260507_153101_modsecurity_similarity.md",
+          "size": 3844
+        },
+        {
+          "path": "project/requirements.txt",
+          "size": 79
+        },
+        {
+          "path": "project/src/__init__.py",
+          "size": 63
+        },
+        {
+          "path": "project/src/__pycache__/__init__.cpython-311.pyc",
+          "size": 243
+        },
+        {
+          "path": "project/src/__pycache__/config.cpython-311.pyc",
+          "size": 1725
+        },
+        {
+          "path": "project/src/__pycache__/main.cpython-311.pyc",
+          "size": 8627
+        },
+        {
+          "path": "project/src/__pycache__/models.cpython-311.pyc",
+          "size": 3592
+        },
+        {
+          "path": "project/src/collectors/__init__.py",
+          "size": 202
+        },
+        {
+          "path": "project/src/collectors/__pycache__/__init__.cpython-311.pyc",
+          "size": 435
+        },
+        {
+          "path": "project/src/collectors/__pycache__/github_web.cpython-311.pyc",
+          "size": 15081
+        },
+        {
+          "path": "project/src/collectors/__pycache__/nvd.cpython-311.pyc",
+          "size": 2241
+        },
+        {
+          "path": "project/src/collectors/github_web.py",
+          "size": 8765
+        },
+        {
+          "path": "project/src/collectors/nvd.py",
+          "size": 956
+        },
+        {
+          "path": "project/src/config.py",
+          "size": 1027
+        },
+        {
+          "path": "project/src/llm/__init__.py",
+          "size": 308
+        },
+        {
+          "path": "project/src/llm/__pycache__/__init__.cpython-311.pyc",
+          "size": 417
+        },
+        {
+          "path": "project/src/llm/__pycache__/prompt_builder.cpython-311.pyc",
+          "size": 2140
+        },
+        {
+          "path": "project/src/llm/__pycache__/report_writer.cpython-311.pyc",
+          "size": 7689
+        },
+        {
+          "path": "project/src/llm/judge.py",
+          "size": 5665
+        },
+        {
+          "path": "project/src/llm/prompt_builder.py",
+          "size": 1075
+        },
+        {
+          "path": "project/src/llm/report_writer.py",
+          "size": 5623
+        },
+        {
+          "path": "project/src/main.py",
+          "size": 7405
+        },
+        {
+          "path": "project/src/models.py",
+          "size": 1862
+        },
+        {
+          "path": "project/src/parser/__init__.py",
+          "size": 145
+        },
+        {
+          "path": "project/src/parser/__pycache__/__init__.cpython-311.pyc",
+          "size": 355
+        },
+        {
+          "path": "project/src/parser/__pycache__/cve_parser.cpython-311.pyc",
+          "size": 3050
+        },
+        {
+          "path": "project/src/parser/cve_parser.py",
+          "size": 1519
+        },
+        {
+          "path": "project/src/retrieval/__init__.py",
+          "size": 405
+        },
+        {
+          "path": "project/src/retrieval/__pycache__/__init__.cpython-311.pyc",
+          "size": 564
+        },
+        {
+          "path": "project/src/retrieval/__pycache__/code_similarity.cpython-311.pyc",
+          "size": 14367
+        },
+        {
+          "path": "project/src/retrieval/__pycache__/simple_ranker.cpython-311.pyc",
+          "size": 1325
+        },
+        {
+          "path": "project/src/retrieval/code_similarity.py",
+          "size": 8299
+        },
+        {
+          "path": "project/src/retrieval/simple_ranker.py",
+          "size": 610
+        },
+        {
+          "path": "project/src/validation/__init__.py",
+          "size": 174
+        },
+        {
+          "path": "project/src/validation/__pycache__/__init__.cpython-311.pyc",
+          "size": 395
+        },
+        {
+          "path": "project/src/validation/__pycache__/report_validator.cpython-311.pyc",
+          "size": 1169
+        },
+        {
+          "path": "project/src/validation/report_validator.py",
+          "size": 544
+        }
+      ],
+      "framework_library_analysis": {
+        "dependency_files": [
+          "project/requirements.txt"
+        ],
+        "detected_frameworks_libraries": {
+          "frontend": [],
+          "backend": [],
+          "ai_ml": [
+            "openai"
+          ],
+          "database": [],
+          "devops": [
+            "cd"
+          ],
+          "security": [
+            "cve",
+            "vulnerability"
+          ]
+        },
+        "project_signals": {
+          "has_docker": false,
+          "has_github_actions": false,
+          "has_tests": false,
+          "has_frontend_config": false,
+          "has_python_project": true,
+          "has_java_project": false,
+          "has_rust_project": false
+        }
+      },
+      "contribution": {
+        "commit_count_sampled": 3,
+        "total_additions_sampled": 1509,
+        "total_deletions_sampled": 19,
+        "top_touched_files": [
+          {
+            "path": "README.md",
+            "change_count": 3,
+            "additions": 92,
+            "deletions": 2
+          },
+          {
+            "path": "project/src/config.py",
+            "change_count": 2,
+            "additions": 34,
+            "deletions": 1
+          },
+          {
+            "path": "project/src/llm/__init__.py",
+            "change_count": 2,
+            "additions": 8,
+            "deletions": 1
+          },
+          {
+            "path": "project/src/llm/report_writer.py",
+            "change_count": 2,
+            "additions": 142,
+            "deletions": 2
+          },
+          {
+            "path": "project/src/main.py",
+            "change_count": 2,
+            "additions": 186,
+            "deletions": 13
+          },
+          {
+            "path": "project/src/models.py",
+            "change_count": 2,
+            "additions": 84,
+            "deletions": 0
+          },
+          {
+            "path": "project/reports/20260507_153101_modsecurity_similarity.md",
+            "change_count": 1,
+            "additions": 32,
+            "deletions": 0
+          },
+          {
+            "path": "project/requirements.txt",
+            "change_count": 1,
+            "additions": 2,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/llm/judge.py",
+            "change_count": 1,
+            "additions": 169,
+            "deletions": 0
+          },
+          {
+            "path": "project/reports/.gitkeep",
+            "change_count": 1,
+            "additions": 1,
+            "deletions": 0
+          },
+          {
+            "path": "project/reports/20260507_142913_openssl.md",
+            "change_count": 1,
+            "additions": 24,
+            "deletions": 0
+          },
+          {
+            "path": "project/reports/20260507_145629_modsecurity_similarity.md",
+            "change_count": 1,
+            "additions": 43,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/__init__.py",
+            "change_count": 1,
+            "additions": 2,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/__pycache__/__init__.cpython-311.pyc",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/__pycache__/config.cpython-311.pyc",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/__pycache__/main.cpython-311.pyc",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/__pycache__/models.cpython-311.pyc",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/collectors/__init__.py",
+            "change_count": 1,
+            "additions": 6,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/collectors/__pycache__/__init__.cpython-311.pyc",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/collectors/__pycache__/github_web.cpython-311.pyc",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/collectors/__pycache__/nvd.cpython-311.pyc",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/collectors/github_web.py",
+            "change_count": 1,
+            "additions": 239,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/collectors/nvd.py",
+            "change_count": 1,
+            "additions": 30,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/llm/__pycache__/__init__.cpython-311.pyc",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/llm/__pycache__/prompt_builder.cpython-311.pyc",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/llm/__pycache__/report_writer.cpython-311.pyc",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/llm/prompt_builder.py",
+            "change_count": 1,
+            "additions": 30,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/parser/__init__.py",
+            "change_count": 1,
+            "additions": 6,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/parser/__pycache__/__init__.cpython-311.pyc",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "project/src/parser/__pycache__/cve_parser.cpython-311.pyc",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          }
+        ],
+        "recent_commits": [
+          {
+            "sha": "f6760e66f64c937b013a86bebb2d2295322a0f71",
+            "message": "change LLM model to qwen2.5",
+            "date": "2026-05-11T05:21:09Z",
+            "additions": 360,
+            "deletions": 18,
+            "changed_files": [
+              "README.md",
+              "project/reports/20260507_153101_modsecurity_similarity.md",
+              "project/requirements.txt",
+              "project/src/config.py",
+              "project/src/llm/__init__.py",
+              "project/src/llm/judge.py",
+              "project/src/llm/report_writer.py",
+              "project/src/main.py",
+              "project/src/models.py"
+            ]
+          },
+          {
+            "sha": "83f0676c0ab0c8bc2f0355429ec0438fbe09a3b2",
+            "message": "base",
+            "date": "2026-05-07T06:10:44Z",
+            "additions": 1148,
+            "deletions": 1,
+            "changed_files": [
+              "README.md",
+              "project/reports/.gitkeep",
+              "project/reports/20260507_142913_openssl.md",
+              "project/reports/20260507_145629_modsecurity_similarity.md",
+              "project/src/__init__.py",
+              "project/src/__pycache__/__init__.cpython-311.pyc",
+              "project/src/__pycache__/config.cpython-311.pyc",
+              "project/src/__pycache__/main.cpython-311.pyc",
+              "project/src/__pycache__/models.cpython-311.pyc",
+              "project/src/collectors/__init__.py",
+              "project/src/collectors/__pycache__/__init__.cpython-311.pyc",
+              "project/src/collectors/__pycache__/github_web.cpython-311.pyc",
+              "project/src/collectors/__pycache__/nvd.cpython-311.pyc",
+              "project/src/collectors/github_web.py",
+              "project/src/collectors/nvd.py",
+              "project/src/config.py",
+              "project/src/llm/__init__.py",
+              "project/src/llm/__pycache__/__init__.cpython-311.pyc",
+              "project/src/llm/__pycache__/prompt_builder.cpython-311.pyc",
+              "project/src/llm/__pycache__/report_writer.cpython-311.pyc"
+            ]
+          },
+          {
+            "sha": "3c68e4c8f17d42f3a452db16d77177ab0a592c16",
+            "message": "first commit",
+            "date": "2026-05-07T05:16:37Z",
+            "additions": 1,
+            "deletions": 0,
+            "changed_files": [
+              "README.md"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repo_name": "study-log",
+      "full_name": "EunjinLee08/study-log",
+      "html_url": "https://github.com/EunjinLee08/study-log",
+      "description": "🖥️ Study log: Linux, CTF, Web Hacking and more.",
+      "created_at": "2025-04-03T17:53:47Z",
+      "updated_at": "2026-03-16T08:34:40Z",
+      "pushed_at": "2026-03-16T08:34:36Z",
+      "stars": 0,
+      "forks": 0,
+      "watchers": 0,
+      "open_issues": 0,
+      "default_branch": "main",
+      "main_language": "C",
+      "languages": {
+        "C": 2234,
+        "Python": 771
+      },
+      "readme_summary_source": "# 🖥️ Security & Development Study Repository\n\nThis repository contains personal study notes and challenge write-ups related to computer science.\nAll content is written and organized for **learning and review purposes**.\n\n---\n\n## 📁 Repository Structure\n\n```plaintext\ncoding-test/\n|-- c-language/  # Baekjoon problems solved in C\n|-- python/ # Baekjoon problems solved in Python\n\nlinux/\n|-- bandit/  # Write-ups for OverTheWire Bandit challenges\n\nsystem-hacking/\n|-- pwnable.tw/  # Write-ups for pwnable.tw challenges\n\nreversing/\n|-- crackme/  # Write-ups for crackme challenges\n\nprojects/\n|-- 2025_WUISP/  # WUISP project\n|-- 30th_hacking_camp_ctf/  # Hacking camp CTF\n|-- security-research/  # CVE study\n```\n\n## 📝 Notes\n- This repository is for personal learning only.\n- Some challenge solutions reference public materials or other write-ups (properly credited).\n",
+      "file_tree_sample": [
+        {
+          "path": "README.md",
+          "size": 874
+        },
+        {
+          "path": "coding-test/c-language/10869.md",
+          "size": 1180
+        },
+        {
+          "path": "coding-test/c-language/11399.md",
+          "size": 1364
+        },
+        {
+          "path": "coding-test/c-language/1764.md",
+          "size": 2262
+        },
+        {
+          "path": "coding-test/c-language/2439.md",
+          "size": 1022
+        },
+        {
+          "path": "coding-test/c-language/25703.md",
+          "size": 1199
+        },
+        {
+          "path": "coding-test/c-language/27866.md",
+          "size": 855
+        },
+        {
+          "path": "coding-test/c-language/9086.md",
+          "size": 1775
+        },
+        {
+          "path": "coding-test/c-language/9498.md",
+          "size": 1474
+        },
+        {
+          "path": "coding-test/c-language/LeetCode_Concatenation_of_Array.md",
+          "size": 1273
+        },
+        {
+          "path": "coding-test/python/2606.md",
+          "size": 1108
+        },
+        {
+          "path": "coding-test/python/5397.md",
+          "size": 1513
+        },
+        {
+          "path": "linux/bandit/level0000.md",
+          "size": 739
+        },
+        {
+          "path": "linux/bandit/level0001.md",
+          "size": 1374
+        },
+        {
+          "path": "linux/bandit/level0102.md",
+          "size": 1447
+        },
+        {
+          "path": "linux/bandit/level0203.md",
+          "size": 1801
+        },
+        {
+          "path": "linux/bandit/level0304.md",
+          "size": 1612
+        },
+        {
+          "path": "linux/bandit/level0405.md",
+          "size": 2133
+        },
+        {
+          "path": "linux/bandit/level0506.md",
+          "size": 2025
+        },
+        {
+          "path": "linux/bandit/level0607.md",
+          "size": 2192
+        },
+        {
+          "path": "linux/bandit/level0708.md",
+          "size": 1554
+        },
+        {
+          "path": "linux/bandit/level0809.md",
+          "size": 1644
+        },
+        {
+          "path": "linux/bandit/level0910.md",
+          "size": 1535
+        },
+        {
+          "path": "linux/bandit/level1011.md",
+          "size": 1742
+        },
+        {
+          "path": "linux/bandit/level1112.md",
+          "size": 2312
+        },
+        {
+          "path": "linux/bandit/level1213.md",
+          "size": 2933
+        },
+        {
+          "path": "linux/bandit/level1314.md",
+          "size": 2474
+        },
+        {
+          "path": "linux/bandit/level1415.md",
+          "size": 2303
+        },
+        {
+          "path": "linux/bandit/level1516.md",
+          "size": 2145
+        },
+        {
+          "path": "projects/2025_WUISP/README.md",
+          "size": 3962
+        },
+        {
+          "path": "projects/30th_hacking_camp_ctf/README.md",
+          "size": 4088
+        },
+        {
+          "path": "projects/30th_hacking_camp_ctf/prob/chall",
+          "size": 15548
+        },
+        {
+          "path": "projects/30th_hacking_camp_ctf/prob/chall.c",
+          "size": 2234
+        },
+        {
+          "path": "projects/30th_hacking_camp_ctf/solve/exploit.py",
+          "size": 771
+        },
+        {
+          "path": "projects/security-research/CVE-2025-54571_ModSecurity.md",
+          "size": 3045
+        },
+        {
+          "path": "reversing/crackme/abex1.md",
+          "size": 3215
+        },
+        {
+          "path": "system-hacking/pwnable.tw/3x17.md",
+          "size": 3773
+        }
+      ],
+      "framework_library_analysis": {
+        "dependency_files": [],
+        "detected_frameworks_libraries": {
+          "frontend": [],
+          "backend": [],
+          "ai_ml": [],
+          "database": [],
+          "devops": [
+            "ci"
+          ],
+          "security": [
+            "cve",
+            "exploit"
+          ]
+        },
+        "project_signals": {
+          "has_docker": false,
+          "has_github_actions": false,
+          "has_tests": false,
+          "has_frontend_config": false,
+          "has_python_project": false,
+          "has_java_project": false,
+          "has_rust_project": false
+        }
+      },
+      "contribution": {
+        "commit_count_sampled": 30,
+        "total_additions_sampled": 1126,
+        "total_deletions_sampled": 25,
+        "top_touched_files": [
+          {
+            "path": "README.md",
+            "change_count": 2,
+            "additions": 5,
+            "deletions": 5
+          },
+          {
+            "path": "linux/bandit/level1415.md",
+            "change_count": 2,
+            "additions": 63,
+            "deletions": 1
+          },
+          {
+            "path": "linux/bandit/level1011.md",
+            "change_count": 2,
+            "additions": 60,
+            "deletions": 1
+          },
+          {
+            "path": "linux/bandit/level0304.md",
+            "change_count": 2,
+            "additions": 63,
+            "deletions": 2
+          },
+          {
+            "path": "linux/bandit/level0001.md",
+            "change_count": 2,
+            "additions": 88,
+            "deletions": 0
+          },
+          {
+            "path": "reversing/crackme/abex1.md",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "crackme/abex1.md",
+            "change_count": 1,
+            "additions": 104,
+            "deletions": 0
+          },
+          {
+            "path": "linux/bandit/level1516.md",
+            "change_count": 1,
+            "additions": 58,
+            "deletions": 0
+          },
+          {
+            "path": "linux/bandit/level1314.md",
+            "change_count": 1,
+            "additions": 60,
+            "deletions": 0
+          },
+          {
+            "path": "linux/bandit/level1213.md",
+            "change_count": 1,
+            "additions": 90,
+            "deletions": 0
+          },
+          {
+            "path": "linux/bandit/level1112.md",
+            "change_count": 1,
+            "additions": 71,
+            "deletions": 0
+          },
+          {
+            "path": "linux/bandit/level0910.md",
+            "change_count": 1,
+            "additions": 45,
+            "deletions": 0
+          },
+          {
+            "path": "linux/bandit/level0809.md",
+            "change_count": 1,
+            "additions": 51,
+            "deletions": 0
+          },
+          {
+            "path": "linux/bandit/level0708.md",
+            "change_count": 1,
+            "additions": 50,
+            "deletions": 0
+          },
+          {
+            "path": "linux/bandit/level0607.md",
+            "change_count": 1,
+            "additions": 62,
+            "deletions": 0
+          },
+          {
+            "path": "projects/security-research/CVE-2025-54571_ModSecurity.md",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "linux/bandit/level0506.md",
+            "change_count": 1,
+            "additions": 63,
+            "deletions": 0
+          },
+          {
+            "path": "linux/bandit/level0405.md",
+            "change_count": 1,
+            "additions": 65,
+            "deletions": 0
+          },
+          {
+            "path": "linux/bandit/level0203.md",
+            "change_count": 1,
+            "additions": 52,
+            "deletions": 0
+          },
+          {
+            "path": "linux/bandit/level0102.md",
+            "change_count": 1,
+            "additions": 50,
+            "deletions": 0
+          },
+          {
+            "path": "linux/bandit/level0000.md",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "projects/30th_hacking_camp_ctf/README.md",
+            "change_count": 1,
+            "additions": 2,
+            "deletions": 1
+          },
+          {
+            "path": "projects/2025_WUISP/README.md",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 15
+          },
+          {
+            "path": "projects/30th_hacking_camp_ctf/solve/exploit.py",
+            "change_count": 1,
+            "additions": 24,
+            "deletions": 0
+          },
+          {
+            "path": "projects/30th_hacking_camp_ctf/prob/chall",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          }
+        ],
+        "recent_commits": [
+          {
+            "sha": "e3f2304bed04cf585b8bef3bb8454d121c635419",
+            "message": "Rename crackme/abex1.md to reversing/crackme/abex1.md",
+            "date": "2026-03-16T08:34:36Z",
+            "additions": 0,
+            "deletions": 0,
+            "changed_files": [
+              "reversing/crackme/abex1.md"
+            ]
+          },
+          {
+            "sha": "c8fda74523911956c3c3e41a727411742149cea5",
+            "message": "Add abex1 crackme analysis and patch instructions",
+            "date": "2026-03-16T08:32:51Z",
+            "additions": 104,
+            "deletions": 0,
+            "changed_files": [
+              "crackme/abex1.md"
+            ]
+          },
+          {
+            "sha": "52c50f4a80885a65fb1c8fb705cb11ac207463da",
+            "message": "Revise README.md for directory structure and descriptions",
+            "date": "2026-03-16T08:17:14Z",
+            "additions": 3,
+            "deletions": 5,
+            "changed_files": [
+              "README.md"
+            ]
+          },
+          {
+            "sha": "c8c062579bfc428cf1ffff86059e2e4484716f25",
+            "message": "Add Bandit Level 15 to Level 16 instructions",
+            "date": "2026-03-16T08:13:02Z",
+            "additions": 58,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level1516.md"
+            ]
+          },
+          {
+            "sha": "58a7d659efe0187ce2d958117c510b9f983040d3",
+            "message": "Update level1415.md",
+            "date": "2026-03-16T08:11:03Z",
+            "additions": 1,
+            "deletions": 1,
+            "changed_files": [
+              "linux/bandit/level1415.md"
+            ]
+          },
+          {
+            "sha": "236e7c8f80ef0f3e7565bc5bbed29494057013e3",
+            "message": "Add Bandit Level 14 to Level 15 transition guide",
+            "date": "2026-03-16T08:09:37Z",
+            "additions": 62,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level1415.md"
+            ]
+          },
+          {
+            "sha": "c6db2663d16224bf69fb690c5c07e6bcfc46b91d",
+            "message": "Create level1314.md",
+            "date": "2026-03-16T08:05:48Z",
+            "additions": 60,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level1314.md"
+            ]
+          },
+          {
+            "sha": "88e21833a46723d3b60d5cd5430b2b14b08c3920",
+            "message": "Create level1213.md",
+            "date": "2026-03-16T07:56:52Z",
+            "additions": 90,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level1213.md"
+            ]
+          },
+          {
+            "sha": "1e05a3e5aa583f295ae412d4131745e575a3bf42",
+            "message": "Add Bandit Level 11 to Level 12 transition guide",
+            "date": "2026-03-16T06:00:51Z",
+            "additions": 71,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level1112.md"
+            ]
+          },
+          {
+            "sha": "10c9548ccc8992518cda610cc21e83dd2be7310f",
+            "message": "Update level1011.md with decoded password",
+            "date": "2026-03-16T05:46:26Z",
+            "additions": 1,
+            "deletions": 1,
+            "changed_files": [
+              "linux/bandit/level1011.md"
+            ]
+          },
+          {
+            "sha": "75e0fec4eab95de0088fc8e1a8052b3ef28e0b8d",
+            "message": "Add Level 10 to Level 11 transition guide",
+            "date": "2026-03-16T05:44:57Z",
+            "additions": 59,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level1011.md"
+            ]
+          },
+          {
+            "sha": "80f4f52a7f3d6ebf790b1a74200062d1b42b38c0",
+            "message": "Document Bandit Level 9 to Level 10 transition",
+            "date": "2026-03-16T05:42:26Z",
+            "additions": 45,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level0910.md"
+            ]
+          },
+          {
+            "sha": "3e4af9866e05d009097e7e120c58a35f9a78809f",
+            "message": "Document Bandit Level 8 to Level 9 transition",
+            "date": "2026-03-16T05:39:38Z",
+            "additions": 51,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level0809.md"
+            ]
+          },
+          {
+            "sha": "476fd6503f0ad677392709f64881fb0d9dc00fbd",
+            "message": "Create level0708.md with level transition details",
+            "date": "2026-03-16T05:36:30Z",
+            "additions": 50,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level0708.md"
+            ]
+          },
+          {
+            "sha": "bc5ef00a40cf2e9b2f27bfe2dd7c147adefcea32",
+            "message": "Add Bandit Level 6 to Level 7 instructions",
+            "date": "2026-03-16T05:32:18Z",
+            "additions": 62,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level0607.md"
+            ]
+          },
+          {
+            "sha": "b3461dfc9b148a843992f1f4ad6f1b85309fbd75",
+            "message": "Add new project directories for CTF and CVE study",
+            "date": "2026-03-16T05:17:33Z",
+            "additions": 2,
+            "deletions": 0,
+            "changed_files": [
+              "README.md"
+            ]
+          },
+          {
+            "sha": "844ad8a6d84a01b8b4f5eeba446874a1ce2eb0bc",
+            "message": "Rename CVE-2025-54571_ModSecurity.md to CVE-2025-54571_ModSecurity.md",
+            "date": "2026-03-16T05:14:45Z",
+            "additions": 0,
+            "deletions": 0,
+            "changed_files": [
+              "projects/security-research/CVE-2025-54571_ModSecurity.md"
+            ]
+          },
+          {
+            "sha": "c526c6b4fd4da0e2db6cd0afc17f2e2e1cb574d9",
+            "message": "Document Bandit Level 5 to Level 6 transition",
+            "date": "2026-03-15T16:34:48Z",
+            "additions": 63,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level0506.md"
+            ]
+          },
+          {
+            "sha": "761112ba15144a24cfae8ca19ab3bb0138d4542e",
+            "message": "Add Bandit Level 4 to Level 5 instructions",
+            "date": "2026-03-15T16:29:21Z",
+            "additions": 65,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level0405.md"
+            ]
+          },
+          {
+            "sha": "96ee3c25095ecabeea489974df3279fdc5c13417",
+            "message": "Revise password note and hidden files explanation",
+            "date": "2026-03-15T16:28:16Z",
+            "additions": 2,
+            "deletions": 2,
+            "changed_files": [
+              "linux/bandit/level0304.md"
+            ]
+          },
+          {
+            "sha": "a319a8cc5561fc5b933e6d111405f6c26acf3853",
+            "message": "Add Bandit Level 3 to Level 4 instructions",
+            "date": "2026-03-15T16:27:17Z",
+            "additions": 61,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level0304.md"
+            ]
+          },
+          {
+            "sha": "b4c2bf08a38da8b979ba5b6768d92da3f220e06e",
+            "message": "Add Bandit Level 2 to Level 3 instructions",
+            "date": "2026-03-15T16:25:01Z",
+            "additions": 52,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level0203.md"
+            ]
+          },
+          {
+            "sha": "1f66b9cdd7b9928c672dd7bce3d19627bbc3a970",
+            "message": "Create level0102.md with level transition details",
+            "date": "2026-03-15T16:23:18Z",
+            "additions": 50,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level0102.md"
+            ]
+          },
+          {
+            "sha": "51d988c01cf9dbe8c2dcea5717dcbcf55551ffa9",
+            "message": "Create level0001.md",
+            "date": "2026-03-15T16:20:49Z",
+            "additions": 52,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level0001.md"
+            ]
+          },
+          {
+            "sha": "dcab30659f470b0eef1dc280f0816f1c10181dbb",
+            "message": "Rename level0001.md to level0000.md",
+            "date": "2026-03-15T16:17:58Z",
+            "additions": 0,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level0000.md"
+            ]
+          },
+          {
+            "sha": "320f0539d8c18b3f3354634f6f8a4b000ca62d6d",
+            "message": "Create level0001.md with SSH access details",
+            "date": "2026-03-15T16:17:28Z",
+            "additions": 36,
+            "deletions": 0,
+            "changed_files": [
+              "linux/bandit/level0001.md"
+            ]
+          },
+          {
+            "sha": "b788f2399a5ae2ccdeb5d0cab80cebbde9ea85eb",
+            "message": "Clarify source information in README",
+            "date": "2026-03-13T17:14:30Z",
+            "additions": 2,
+            "deletions": 1,
+            "changed_files": [
+              "projects/30th_hacking_camp_ctf/README.md"
+            ]
+          },
+          {
+            "sha": "ed0402d3df8f7a8ea89a20175177d8c9274fc512",
+            "message": "Remove file structure section from README",
+            "date": "2026-03-13T17:13:55Z",
+            "additions": 0,
+            "deletions": 15,
+            "changed_files": [
+              "projects/2025_WUISP/README.md"
+            ]
+          },
+          {
+            "sha": "ab39b940e7ba65af0e51d00e6b88b7ed2c3628b9",
+            "message": "Add exploit script for remote buffer overflow attack",
+            "date": "2026-03-13T17:13:01Z",
+            "additions": 24,
+            "deletions": 0,
+            "changed_files": [
+              "projects/30th_hacking_camp_ctf/solve/exploit.py"
+            ]
+          },
+          {
+            "sha": "68838a8a1daf01dd70b2c49b67b50202ecbde7f0",
+            "message": "Add files via upload",
+            "date": "2026-03-13T17:12:04Z",
+            "additions": 0,
+            "deletions": 0,
+            "changed_files": [
+              "projects/30th_hacking_camp_ctf/prob/chall"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repo_name": "OSS",
+      "full_name": "EunjinLee08/OSS",
+      "html_url": "https://github.com/EunjinLee08/OSS",
+      "description": null,
+      "created_at": "2025-07-12T08:59:41Z",
+      "updated_at": "2025-07-22T10:44:52Z",
+      "pushed_at": "2025-07-29T11:23:21Z",
+      "stars": 0,
+      "forks": 0,
+      "watchers": 0,
+      "open_issues": 0,
+      "default_branch": "main",
+      "main_language": "JavaScript",
+      "languages": {
+        "JavaScript": 15544
+      },
+      "readme_summary_source": "��#\u0000 \u0000O\u0000S\u0000S\u0000\r\u0000\n\u0000",
+      "file_tree_sample": [
+        {
+          "path": "README.md",
+          "size": 16
+        },
+        {
+          "path": "dnsChecker.js",
+          "size": 9325
+        },
+        {
+          "path": "htmlParser.js",
+          "size": 2468
+        },
+        {
+          "path": "node_modules/.bin/tldts",
+          "size": 381
+        },
+        {
+          "path": "node_modules/.bin/tldts.cmd",
+          "size": 304
+        },
+        {
+          "path": "node_modules/.bin/tldts.ps1",
+          "size": 789
+        },
+        {
+          "path": "node_modules/.bin/whois",
+          "size": 373
+        },
+        {
+          "path": "node_modules/.bin/whois.cmd",
+          "size": 300
+        },
+        {
+          "path": "node_modules/.bin/whois.ps1",
+          "size": 773
+        },
+        {
+          "path": "node_modules/.package-lock.json",
+          "size": 43426
+        },
+        {
+          "path": "node_modules/ansi-regex/index.d.ts",
+          "size": 744
+        },
+        {
+          "path": "node_modules/ansi-regex/index.js",
+          "size": 350
+        },
+        {
+          "path": "node_modules/ansi-regex/license",
+          "size": 1109
+        },
+        {
+          "path": "node_modules/ansi-regex/package.json",
+          "size": 841
+        },
+        {
+          "path": "node_modules/ansi-regex/readme.md",
+          "size": 2565
+        },
+        {
+          "path": "node_modules/ansi-styles/index.d.ts",
+          "size": 6349
+        },
+        {
+          "path": "node_modules/ansi-styles/index.js",
+          "size": 4139
+        },
+        {
+          "path": "node_modules/ansi-styles/license",
+          "size": 1109
+        },
+        {
+          "path": "node_modules/ansi-styles/package.json",
+          "size": 1054
+        },
+        {
+          "path": "node_modules/ansi-styles/readme.md",
+          "size": 4327
+        },
+        {
+          "path": "node_modules/asynckit/LICENSE",
+          "size": 1078
+        },
+        {
+          "path": "node_modules/asynckit/README.md",
+          "size": 7640
+        },
+        {
+          "path": "node_modules/asynckit/bench.js",
+          "size": 1256
+        },
+        {
+          "path": "node_modules/asynckit/index.js",
+          "size": 156
+        },
+        {
+          "path": "node_modules/asynckit/lib/abort.js",
+          "size": 497
+        },
+        {
+          "path": "node_modules/asynckit/lib/async.js",
+          "size": 599
+        },
+        {
+          "path": "node_modules/asynckit/lib/defer.js",
+          "size": 441
+        },
+        {
+          "path": "node_modules/asynckit/lib/iterate.js",
+          "size": 1794
+        },
+        {
+          "path": "node_modules/asynckit/lib/readable_asynckit.js",
+          "size": 1611
+        },
+        {
+          "path": "node_modules/asynckit/lib/readable_parallel.js",
+          "size": 673
+        },
+        {
+          "path": "node_modules/asynckit/lib/readable_serial.js",
+          "size": 655
+        },
+        {
+          "path": "node_modules/asynckit/lib/readable_serial_ordered.js",
+          "size": 941
+        },
+        {
+          "path": "node_modules/asynckit/lib/state.js",
+          "size": 941
+        },
+        {
+          "path": "node_modules/asynckit/lib/streamify.js",
+          "size": 2964
+        },
+        {
+          "path": "node_modules/asynckit/lib/terminator.js",
+          "size": 533
+        },
+        {
+          "path": "node_modules/asynckit/package.json",
+          "size": 1611
+        },
+        {
+          "path": "node_modules/asynckit/parallel.js",
+          "size": 1017
+        },
+        {
+          "path": "node_modules/asynckit/serial.js",
+          "size": 501
+        },
+        {
+          "path": "node_modules/asynckit/serialOrdered.js",
+          "size": 1751
+        },
+        {
+          "path": "node_modules/asynckit/stream.js",
+          "size": 703
+        },
+        {
+          "path": "node_modules/axios/CHANGELOG.md",
+          "size": 81333
+        },
+        {
+          "path": "node_modules/axios/LICENSE",
+          "size": 1084
+        },
+        {
+          "path": "node_modules/axios/MIGRATION_GUIDE.md",
+          "size": 37
+        },
+        {
+          "path": "node_modules/axios/README.md",
+          "size": 70470
+        },
+        {
+          "path": "node_modules/axios/dist/axios.js",
+          "size": 145024
+        },
+        {
+          "path": "node_modules/axios/dist/axios.js.map",
+          "size": 242242
+        },
+        {
+          "path": "node_modules/axios/dist/axios.min.js",
+          "size": 54293
+        },
+        {
+          "path": "node_modules/axios/dist/axios.min.js.map",
+          "size": 171704
+        },
+        {
+          "path": "node_modules/axios/dist/browser/axios.cjs",
+          "size": 97143
+        },
+        {
+          "path": "node_modules/axios/dist/browser/axios.cjs.map",
+          "size": 207706
+        },
+        {
+          "path": "node_modules/axios/dist/esm/axios.js",
+          "size": 98019
+        },
+        {
+          "path": "node_modules/axios/dist/esm/axios.js.map",
+          "size": 208982
+        },
+        {
+          "path": "node_modules/axios/dist/esm/axios.min.js",
+          "size": 35460
+        },
+        {
+          "path": "node_modules/axios/dist/esm/axios.min.js.map",
+          "size": 163096
+        },
+        {
+          "path": "node_modules/axios/dist/node/axios.cjs",
+          "size": 129480
+        },
+        {
+          "path": "node_modules/axios/dist/node/axios.cjs.map",
+          "size": 273979
+        },
+        {
+          "path": "node_modules/axios/index.d.cts",
+          "size": 18470
+        },
+        {
+          "path": "node_modules/axios/index.d.ts",
+          "size": 18569
+        },
+        {
+          "path": "node_modules/axios/index.js",
+          "size": 681
+        },
+        {
+          "path": "node_modules/axios/lib/adapters/README.md",
+          "size": 915
+        },
+        {
+          "path": "node_modules/axios/lib/adapters/adapters.js",
+          "size": 1970
+        },
+        {
+          "path": "node_modules/axios/lib/adapters/fetch.js",
+          "size": 6663
+        },
+        {
+          "path": "node_modules/axios/lib/adapters/http.js",
+          "size": 22550
+        },
+        {
+          "path": "node_modules/axios/lib/adapters/xhr.js",
+          "size": 6623
+        },
+        {
+          "path": "node_modules/axios/lib/axios.js",
+          "size": 2549
+        },
+        {
+          "path": "node_modules/axios/lib/cancel/CancelToken.js",
+          "size": 2789
+        },
+        {
+          "path": "node_modules/axios/lib/cancel/CanceledError.js",
+          "size": 697
+        },
+        {
+          "path": "node_modules/axios/lib/cancel/isCancel.js",
+          "size": 99
+        },
+        {
+          "path": "node_modules/axios/lib/core/Axios.js",
+          "size": 6868
+        },
+        {
+          "path": "node_modules/axios/lib/core/AxiosError.js",
+          "size": 2546
+        },
+        {
+          "path": "node_modules/axios/lib/core/AxiosHeaders.js",
+          "size": 7395
+        },
+        {
+          "path": "node_modules/axios/lib/core/InterceptorManager.js",
+          "size": 1569
+        },
+        {
+          "path": "node_modules/axios/lib/core/README.md",
+          "size": 399
+        },
+        {
+          "path": "node_modules/axios/lib/core/buildFullPath.js",
+          "size": 783
+        },
+        {
+          "path": "node_modules/axios/lib/core/dispatchRequest.js",
+          "size": 2187
+        },
+        {
+          "path": "node_modules/axios/lib/core/mergeConfig.js",
+          "size": 3415
+        },
+        {
+          "path": "node_modules/axios/lib/core/settle.js",
+          "size": 836
+        },
+        {
+          "path": "node_modules/axios/lib/core/transformData.js",
+          "size": 778
+        },
+        {
+          "path": "node_modules/axios/lib/defaults/index.js",
+          "size": 4479
+        },
+        {
+          "path": "node_modules/axios/lib/defaults/transitional.js",
+          "size": 118
+        },
+        {
+          "path": "node_modules/axios/lib/env/README.md",
+          "size": 131
+        },
+        {
+          "path": "node_modules/axios/lib/env/classes/FormData.js",
+          "size": 106
+        },
+        {
+          "path": "node_modules/axios/lib/env/data.js",
+          "size": 32
+        },
+        {
+          "path": "node_modules/axios/lib/helpers/AxiosTransformStream.js",
+          "size": 3680
+        },
+        {
+          "path": "node_modules/axios/lib/helpers/AxiosURLSearchParams.js",
+          "size": 1439
+        },
+        {
+          "path": "node_modules/axios/lib/helpers/HttpStatusCode.js",
+          "size": 1600
+        },
+        {
+          "path": "node_modules/axios/lib/helpers/README.md",
+          "size": 351
+        },
+        {
+          "path": "node_modules/axios/lib/helpers/ZlibHeaderTransformStream.js",
+          "size": 681
+        },
+        {
+          "path": "node_modules/axios/lib/helpers/bind.js",
+          "size": 134
+        },
+        {
+          "path": "node_modules/axios/lib/helpers/buildURL.js",
+          "size": 1659
+        },
+        {
+          "path": "node_modules/axios/lib/helpers/callbackify.js",
+          "size": 372
+        },
+        {
+          "path": "node_modules/axios/lib/helpers/combineURLs.js",
+          "size": 382
+        },
+        {
+          "path": "node_modules/axios/lib/helpers/composeSignals.js",
+          "size": 1364
+        },
+        {
+          "path": "node_modules/axios/lib/helpers/cookies.js",
+          "size": 1045
+        },
+        {
+          "path": "node_modules/axios/lib/helpers/deprecatedMethod.js",
+          "size": 746
+        },
+        {
+          "path": "node_modules/axios/lib/helpers/formDataToJSON.js",
+          "size": 2164
+        },
+        {
+          "path": "node_modules/axios/lib/helpers/formDataToStream.js",
+          "size": 2965
+        },
+        {
+          "path": "node_modules/axios/lib/helpers/fromDataURI.js",
+          "size": 1365
+        },
+        {
+          "path": "node_modules/axios/lib/helpers/isAbsoluteURL.js",
+          "size": 561
+        },
+        {
+          "path": "node_modules/axios/lib/helpers/isAxiosError.js",
+          "size": 373
+        }
+      ],
+      "framework_library_analysis": {
+        "dependency_files": [
+          "node_modules/ansi-regex/package.json",
+          "node_modules/ansi-styles/package.json",
+          "node_modules/asynckit/package.json",
+          "node_modules/axios/package.json",
+          "node_modules/boolbase/package.json",
+          "node_modules/call-bind-apply-helpers/package.json",
+          "node_modules/camel-case/package.json",
+          "node_modules/camelcase/package.json",
+          "node_modules/change-case/package.json",
+          "node_modules/cheerio-select/lib/esm/package.json"
+        ],
+        "detected_frameworks_libraries": {
+          "frontend": [
+            "react",
+            "next",
+            "webpack"
+          ],
+          "backend": [
+            "express",
+            "gin"
+          ],
+          "ai_ml": [],
+          "database": [],
+          "devops": [
+            "ci"
+          ],
+          "security": []
+        },
+        "project_signals": {
+          "has_docker": false,
+          "has_github_actions": false,
+          "has_tests": true,
+          "has_frontend_config": true,
+          "has_python_project": false,
+          "has_java_project": false,
+          "has_rust_project": false
+        }
+      },
+      "contribution": {
+        "commit_count_sampled": 3,
+        "total_additions_sampled": 261955,
+        "total_deletions_sampled": 0,
+        "top_touched_files": [
+          {
+            "path": "node_modules/.package-lock.json",
+            "change_count": 2,
+            "additions": 1171,
+            "deletions": 0
+          },
+          {
+            "path": "dnsChecker.js",
+            "change_count": 1,
+            "additions": 224,
+            "deletions": 0
+          },
+          {
+            "path": "htmlParser.js",
+            "change_count": 1,
+            "additions": 78,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/LICENSE",
+            "change_count": 1,
+            "additions": 21,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/README.md",
+            "change_count": 1,
+            "additions": 233,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/bench.js",
+            "change_count": 1,
+            "additions": 76,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/index.js",
+            "change_count": 1,
+            "additions": 6,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/lib/abort.js",
+            "change_count": 1,
+            "additions": 29,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/lib/async.js",
+            "change_count": 1,
+            "additions": 34,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/lib/defer.js",
+            "change_count": 1,
+            "additions": 26,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/lib/iterate.js",
+            "change_count": 1,
+            "additions": 75,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/lib/readable_asynckit.js",
+            "change_count": 1,
+            "additions": 91,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/lib/readable_parallel.js",
+            "change_count": 1,
+            "additions": 25,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/lib/readable_serial.js",
+            "change_count": 1,
+            "additions": 25,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/lib/readable_serial_ordered.js",
+            "change_count": 1,
+            "additions": 29,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/lib/state.js",
+            "change_count": 1,
+            "additions": 37,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/lib/streamify.js",
+            "change_count": 1,
+            "additions": 141,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/lib/terminator.js",
+            "change_count": 1,
+            "additions": 29,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/package.json",
+            "change_count": 1,
+            "additions": 63,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/parallel.js",
+            "change_count": 1,
+            "additions": 43,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/serial.js",
+            "change_count": 1,
+            "additions": 17,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/serialOrdered.js",
+            "change_count": 1,
+            "additions": 75,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/asynckit/stream.js",
+            "change_count": 1,
+            "additions": 21,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/axios/CHANGELOG.md",
+            "change_count": 1,
+            "additions": 1220,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/axios/LICENSE",
+            "change_count": 1,
+            "additions": 7,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/axios/MIGRATION_GUIDE.md",
+            "change_count": 1,
+            "additions": 3,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/axios/README.md",
+            "change_count": 1,
+            "additions": 1682,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/axios/dist/axios.js",
+            "change_count": 1,
+            "additions": 4296,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/axios/dist/axios.js.map",
+            "change_count": 1,
+            "additions": 1,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/axios/dist/axios.min.js",
+            "change_count": 1,
+            "additions": 3,
+            "deletions": 0
+          }
+        ],
+        "recent_commits": [
+          {
+            "sha": "982a4390664be9ab56935020dafbacaf4b7d68ca",
+            "message": "✨ DNS 기반 체커 구현",
+            "date": "2025-07-22T10:44:38Z",
+            "additions": 224,
+            "deletions": 0,
+            "changed_files": [
+              "dnsChecker.js"
+            ]
+          },
+          {
+            "sha": "86e8aff0a146ec62da67f0ae4e384248bcda52e2",
+            "message": "✨ html 파싱 기반 위험도 분석 기능 구현",
+            "date": "2025-07-12T09:41:08Z",
+            "additions": 191530,
+            "deletions": 0,
+            "changed_files": [
+              "htmlParser.js",
+              "node_modules/.package-lock.json",
+              "node_modules/asynckit/LICENSE",
+              "node_modules/asynckit/README.md",
+              "node_modules/asynckit/bench.js",
+              "node_modules/asynckit/index.js",
+              "node_modules/asynckit/lib/abort.js",
+              "node_modules/asynckit/lib/async.js",
+              "node_modules/asynckit/lib/defer.js",
+              "node_modules/asynckit/lib/iterate.js",
+              "node_modules/asynckit/lib/readable_asynckit.js",
+              "node_modules/asynckit/lib/readable_parallel.js",
+              "node_modules/asynckit/lib/readable_serial.js",
+              "node_modules/asynckit/lib/readable_serial_ordered.js",
+              "node_modules/asynckit/lib/state.js",
+              "node_modules/asynckit/lib/streamify.js",
+              "node_modules/asynckit/lib/terminator.js",
+              "node_modules/asynckit/package.json",
+              "node_modules/asynckit/parallel.js",
+              "node_modules/asynckit/serial.js"
+            ]
+          },
+          {
+            "sha": "b3ab9ba85f8f4de9f5db008c3ffe9548837b973c",
+            "message": "🎉 whois 기반 웹 사이트 위험도 체커",
+            "date": "2025-07-12T09:02:17Z",
+            "additions": 70201,
+            "deletions": 0,
+            "changed_files": [
+              "README.md",
+              "node_modules/.bin/tldts",
+              "node_modules/.bin/tldts.cmd",
+              "node_modules/.bin/tldts.ps1",
+              "node_modules/.bin/whois",
+              "node_modules/.bin/whois.cmd",
+              "node_modules/.bin/whois.ps1",
+              "node_modules/.package-lock.json",
+              "node_modules/ansi-regex/index.d.ts",
+              "node_modules/ansi-regex/index.js",
+              "node_modules/ansi-regex/license",
+              "node_modules/ansi-regex/package.json",
+              "node_modules/ansi-regex/readme.md",
+              "node_modules/ansi-styles/index.d.ts",
+              "node_modules/ansi-styles/index.js",
+              "node_modules/ansi-styles/license",
+              "node_modules/ansi-styles/package.json",
+              "node_modules/ansi-styles/readme.md",
+              "node_modules/camel-case/LICENSE",
+              "node_modules/camel-case/camel-case.d.ts"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repo_name": "dailycodebot",
+      "full_name": "EunjinLee08/dailycodebot",
+      "html_url": "https://github.com/EunjinLee08/dailycodebot",
+      "description": null,
+      "created_at": "2025-06-21T10:38:56Z",
+      "updated_at": "2025-07-07T09:05:56Z",
+      "pushed_at": "2025-07-07T09:05:53Z",
+      "stars": 0,
+      "forks": 0,
+      "watchers": 0,
+      "open_issues": 0,
+      "default_branch": "master",
+      "main_language": "JavaScript",
+      "languages": {
+        "JavaScript": 8910
+      },
+      "readme_summary_source": null,
+      "file_tree_sample": [
+        {
+          "path": ".gitignore",
+          "size": 4
+        },
+        {
+          "path": "firebase.js",
+          "size": 457
+        },
+        {
+          "path": "index.js",
+          "size": 7935
+        },
+        {
+          "path": "node_modules/.bin/fxparser",
+          "size": 409
+        },
+        {
+          "path": "node_modules/.bin/fxparser.cmd",
+          "size": 318
+        },
+        {
+          "path": "node_modules/.bin/fxparser.ps1",
+          "size": 845
+        },
+        {
+          "path": "node_modules/.bin/mime",
+          "size": 371
+        },
+        {
+          "path": "node_modules/.bin/mime.cmd",
+          "size": 299
+        },
+        {
+          "path": "node_modules/.bin/mime.ps1",
+          "size": 769
+        },
+        {
+          "path": "node_modules/.bin/proto-loader-gen-types",
+          "size": 457
+        },
+        {
+          "path": "node_modules/.bin/proto-loader-gen-types.cmd",
+          "size": 342
+        },
+        {
+          "path": "node_modules/.bin/proto-loader-gen-types.ps1",
+          "size": 941
+        },
+        {
+          "path": "node_modules/.bin/semver",
+          "size": 389
+        },
+        {
+          "path": "node_modules/.bin/semver.cmd",
+          "size": 308
+        },
+        {
+          "path": "node_modules/.bin/semver.ps1",
+          "size": 805
+        },
+        {
+          "path": "node_modules/.bin/uuid",
+          "size": 393
+        },
+        {
+          "path": "node_modules/.bin/uuid.cmd",
+          "size": 310
+        },
+        {
+          "path": "node_modules/.bin/uuid.ps1",
+          "size": 813
+        },
+        {
+          "path": "node_modules/.package-lock.json",
+          "size": 126058
+        },
+        {
+          "path": "node_modules/@discordjs/builders/LICENSE",
+          "size": 10788
+        },
+        {
+          "path": "node_modules/@discordjs/builders/README.md",
+          "size": 3529
+        },
+        {
+          "path": "node_modules/@discordjs/builders/dist/index.d.mts",
+          "size": 102074
+        },
+        {
+          "path": "node_modules/@discordjs/builders/dist/index.d.ts",
+          "size": 102074
+        },
+        {
+          "path": "node_modules/@discordjs/builders/dist/index.js",
+          "size": 119024
+        },
+        {
+          "path": "node_modules/@discordjs/builders/dist/index.js.map",
+          "size": 211285
+        },
+        {
+          "path": "node_modules/@discordjs/builders/dist/index.mjs",
+          "size": 112503
+        },
+        {
+          "path": "node_modules/@discordjs/builders/dist/index.mjs.map",
+          "size": 212153
+        },
+        {
+          "path": "node_modules/@discordjs/builders/package.json",
+          "size": 2807
+        },
+        {
+          "path": "node_modules/@discordjs/collection/CHANGELOG.md",
+          "size": 10376
+        },
+        {
+          "path": "node_modules/@discordjs/collection/LICENSE",
+          "size": 10787
+        },
+        {
+          "path": "node_modules/@discordjs/collection/README.md",
+          "size": 3310
+        },
+        {
+          "path": "node_modules/@discordjs/collection/dist/index.d.mts",
+          "size": 21229
+        },
+        {
+          "path": "node_modules/@discordjs/collection/dist/index.d.ts",
+          "size": 21229
+        },
+        {
+          "path": "node_modules/@discordjs/collection/dist/index.js",
+          "size": 17374
+        },
+        {
+          "path": "node_modules/@discordjs/collection/dist/index.js.map",
+          "size": 42339
+        },
+        {
+          "path": "node_modules/@discordjs/collection/dist/index.mjs",
+          "size": 16368
+        },
+        {
+          "path": "node_modules/@discordjs/collection/dist/index.mjs.map",
+          "size": 42290
+        },
+        {
+          "path": "node_modules/@discordjs/collection/package.json",
+          "size": 2284
+        },
+        {
+          "path": "node_modules/@discordjs/formatters/LICENSE",
+          "size": 10791
+        },
+        {
+          "path": "node_modules/@discordjs/formatters/README.md",
+          "size": 3560
+        },
+        {
+          "path": "node_modules/@discordjs/formatters/dist/index.d.mts",
+          "size": 24663
+        },
+        {
+          "path": "node_modules/@discordjs/formatters/dist/index.d.ts",
+          "size": 24663
+        },
+        {
+          "path": "node_modules/@discordjs/formatters/dist/index.js",
+          "size": 13842
+        },
+        {
+          "path": "node_modules/@discordjs/formatters/dist/index.js.map",
+          "size": 39447
+        },
+        {
+          "path": "node_modules/@discordjs/formatters/dist/index.mjs",
+          "size": 11332
+        },
+        {
+          "path": "node_modules/@discordjs/formatters/dist/index.mjs.map",
+          "size": 39193
+        },
+        {
+          "path": "node_modules/@discordjs/formatters/package.json",
+          "size": 2439
+        },
+        {
+          "path": "node_modules/@discordjs/rest/LICENSE",
+          "size": 10405
+        },
+        {
+          "path": "node_modules/@discordjs/rest/README.md",
+          "size": 4903
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/index.d.mts",
+          "size": 30362
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/index.d.ts",
+          "size": 30362
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/index.js",
+          "size": 51029
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/index.js.map",
+          "size": 111050
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/index.mjs",
+          "size": 48891
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/index.mjs.map",
+          "size": 111010
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/strategies/undiciRequest.d.mts",
+          "size": 661
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/strategies/undiciRequest.d.ts",
+          "size": 661
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/strategies/undiciRequest.js",
+          "size": 3111
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/strategies/undiciRequest.js.map",
+          "size": 3907
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/strategies/undiciRequest.mjs",
+          "size": 1989
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/strategies/undiciRequest.mjs.map",
+          "size": 3877
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/web.d.mts",
+          "size": 30362
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/web.d.ts",
+          "size": 30362
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/web.js",
+          "size": 48827
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/web.js.map",
+          "size": 106695
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/web.mjs",
+          "size": 46766
+        },
+        {
+          "path": "node_modules/@discordjs/rest/dist/web.mjs.map",
+          "size": 106570
+        },
+        {
+          "path": "node_modules/@discordjs/rest/node_modules/@discordjs/collection/LICENSE",
+          "size": 10787
+        },
+        {
+          "path": "node_modules/@discordjs/rest/node_modules/@discordjs/collection/README.md",
+          "size": 3305
+        },
+        {
+          "path": "node_modules/@discordjs/rest/node_modules/@discordjs/collection/dist/index.d.mts",
+          "size": 27145
+        },
+        {
+          "path": "node_modules/@discordjs/rest/node_modules/@discordjs/collection/dist/index.d.ts",
+          "size": 27145
+        },
+        {
+          "path": "node_modules/@discordjs/rest/node_modules/@discordjs/collection/dist/index.js",
+          "size": 19780
+        },
+        {
+          "path": "node_modules/@discordjs/rest/node_modules/@discordjs/collection/dist/index.js.map",
+          "size": 52800
+        },
+        {
+          "path": "node_modules/@discordjs/rest/node_modules/@discordjs/collection/dist/index.mjs",
+          "size": 18774
+        },
+        {
+          "path": "node_modules/@discordjs/rest/node_modules/@discordjs/collection/dist/index.mjs.map",
+          "size": 52751
+        },
+        {
+          "path": "node_modules/@discordjs/rest/node_modules/@discordjs/collection/package.json",
+          "size": 2484
+        },
+        {
+          "path": "node_modules/@discordjs/rest/package.json",
+          "size": 3291
+        },
+        {
+          "path": "node_modules/@discordjs/util/LICENSE",
+          "size": 10758
+        },
+        {
+          "path": "node_modules/@discordjs/util/README.md",
+          "size": 2762
+        },
+        {
+          "path": "node_modules/@discordjs/util/dist/index.d.mts",
+          "size": 3923
+        },
+        {
+          "path": "node_modules/@discordjs/util/dist/index.d.ts",
+          "size": 3923
+        },
+        {
+          "path": "node_modules/@discordjs/util/dist/index.js",
+          "size": 4472
+        },
+        {
+          "path": "node_modules/@discordjs/util/dist/index.js.map",
+          "size": 8947
+        },
+        {
+          "path": "node_modules/@discordjs/util/dist/index.mjs",
+          "size": 3166
+        },
+        {
+          "path": "node_modules/@discordjs/util/dist/index.mjs.map",
+          "size": 8863
+        },
+        {
+          "path": "node_modules/@discordjs/util/package.json",
+          "size": 2525
+        },
+        {
+          "path": "node_modules/@discordjs/ws/LICENSE",
+          "size": 10790
+        },
+        {
+          "path": "node_modules/@discordjs/ws/README.md",
+          "size": 7355
+        },
+        {
+          "path": "node_modules/@discordjs/ws/dist/defaultWorker.d.mts",
+          "size": 13
+        },
+        {
+          "path": "node_modules/@discordjs/ws/dist/defaultWorker.d.ts",
+          "size": 13
+        },
+        {
+          "path": "node_modules/@discordjs/ws/dist/defaultWorker.js",
+          "size": 37482
+        },
+        {
+          "path": "node_modules/@discordjs/ws/dist/defaultWorker.js.map",
+          "size": 81049
+        },
+        {
+          "path": "node_modules/@discordjs/ws/dist/defaultWorker.mjs",
+          "size": 35172
+        },
+        {
+          "path": "node_modules/@discordjs/ws/dist/defaultWorker.mjs.map",
+          "size": 81278
+        },
+        {
+          "path": "node_modules/@discordjs/ws/dist/index.d.mts",
+          "size": 22570
+        },
+        {
+          "path": "node_modules/@discordjs/ws/dist/index.d.ts",
+          "size": 22570
+        },
+        {
+          "path": "node_modules/@discordjs/ws/dist/index.js",
+          "size": 53177
+        },
+        {
+          "path": "node_modules/@discordjs/ws/dist/index.js.map",
+          "size": 100511
+        },
+        {
+          "path": "node_modules/@discordjs/ws/dist/index.mjs",
+          "size": 49745
+        },
+        {
+          "path": "node_modules/@discordjs/ws/dist/index.mjs.map",
+          "size": 101262
+        }
+      ],
+      "framework_library_analysis": {
+        "dependency_files": [
+          "node_modules/@discordjs/builders/package.json",
+          "node_modules/@discordjs/collection/package.json",
+          "node_modules/@discordjs/formatters/package.json",
+          "node_modules/@discordjs/rest/node_modules/@discordjs/collection/package.json",
+          "node_modules/@discordjs/rest/package.json",
+          "node_modules/@discordjs/util/package.json",
+          "node_modules/@discordjs/ws/node_modules/@discordjs/collection/package.json",
+          "node_modules/@discordjs/ws/package.json",
+          "node_modules/@fastify/busboy/package.json",
+          "node_modules/@firebase/app-check-interop-types/package.json"
+        ],
+        "detected_frameworks_libraries": {
+          "frontend": [
+            "next",
+            "vite"
+          ],
+          "backend": [
+            "gin"
+          ],
+          "ai_ml": [],
+          "database": [
+            "firebase"
+          ],
+          "devops": [
+            "ci",
+            "cd"
+          ],
+          "security": []
+        },
+        "project_signals": {
+          "has_docker": false,
+          "has_github_actions": false,
+          "has_tests": true,
+          "has_frontend_config": true,
+          "has_python_project": false,
+          "has_java_project": false,
+          "has_rust_project": false
+        }
+      },
+      "contribution": {
+        "commit_count_sampled": 7,
+        "total_additions_sampled": 1176912,
+        "total_deletions_sampled": 54,
+        "top_touched_files": [
+          {
+            "path": "index.js",
+            "change_count": 6,
+            "additions": 268,
+            "deletions": 16
+          },
+          {
+            "path": "services/checkinService.js",
+            "change_count": 2,
+            "additions": 3,
+            "deletions": 3
+          },
+          {
+            "path": "node_modules/.package-lock.json",
+            "change_count": 2,
+            "additions": 2923,
+            "deletions": 17
+          },
+          {
+            "path": "node_modules/accepts/HISTORY.md",
+            "change_count": 1,
+            "additions": 250,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/accepts/LICENSE",
+            "change_count": 1,
+            "additions": 23,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/accepts/README.md",
+            "change_count": 1,
+            "additions": 140,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/accepts/index.js",
+            "change_count": 1,
+            "additions": 238,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/accepts/node_modules/mime-db/HISTORY.md",
+            "change_count": 1,
+            "additions": 541,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/accepts/node_modules/mime-db/LICENSE",
+            "change_count": 1,
+            "additions": 23,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/accepts/node_modules/mime-db/README.md",
+            "change_count": 1,
+            "additions": 109,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/accepts/node_modules/mime-db/db.json",
+            "change_count": 1,
+            "additions": 9342,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/accepts/node_modules/mime-db/index.js",
+            "change_count": 1,
+            "additions": 12,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/accepts/node_modules/mime-db/package.json",
+            "change_count": 1,
+            "additions": 56,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/accepts/node_modules/mime-types/HISTORY.md",
+            "change_count": 1,
+            "additions": 421,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/accepts/node_modules/mime-types/LICENSE",
+            "change_count": 1,
+            "additions": 23,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/accepts/node_modules/mime-types/README.md",
+            "change_count": 1,
+            "additions": 126,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/accepts/node_modules/mime-types/index.js",
+            "change_count": 1,
+            "additions": 211,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/accepts/node_modules/mime-types/mimeScore.js",
+            "change_count": 1,
+            "additions": 52,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/accepts/node_modules/mime-types/package.json",
+            "change_count": 1,
+            "additions": 45,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/accepts/package.json",
+            "change_count": 1,
+            "additions": 47,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/body-parser/HISTORY.md",
+            "change_count": 1,
+            "additions": 731,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/body-parser/LICENSE",
+            "change_count": 1,
+            "additions": 23,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/body-parser/README.md",
+            "change_count": 1,
+            "additions": 491,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/body-parser/index.js",
+            "change_count": 1,
+            "additions": 80,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/body-parser/lib/read.js",
+            "change_count": 1,
+            "additions": 210,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/body-parser/lib/types/json.js",
+            "change_count": 1,
+            "additions": 206,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/body-parser/lib/types/raw.js",
+            "change_count": 1,
+            "additions": 75,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/body-parser/lib/types/text.js",
+            "change_count": 1,
+            "additions": 80,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/body-parser/lib/types/urlencoded.js",
+            "change_count": 1,
+            "additions": 177,
+            "deletions": 0
+          },
+          {
+            "path": "node_modules/body-parser/lib/utils.js",
+            "change_count": 1,
+            "additions": 83,
+            "deletions": 0
+          }
+        ],
+        "recent_commits": [
+          {
+            "sha": "18482218f0b574c467266e813772b566e0fd9c7b",
+            "message": "✨ 누적 벌금 조회 기능 구현",
+            "date": "2025-07-07T09:05:45Z",
+            "additions": 45,
+            "deletions": 0,
+            "changed_files": [
+              "index.js"
+            ]
+          },
+          {
+            "sha": "51b026107749c415187947732e8ca0f4159e93a1",
+            "message": "✨ 주간 누락자 확인 기능 추가",
+            "date": "2025-07-07T08:30:01Z",
+            "additions": 63,
+            "deletions": 1,
+            "changed_files": [
+              "index.js",
+              "services/checkinService.js"
+            ]
+          },
+          {
+            "sha": "7c25d8599966e31b60ddb3764ede408453ec9434",
+            "message": "⚡️ check out who didn't submit",
+            "date": "2025-06-23T11:46:58Z",
+            "additions": 35,
+            "deletions": 8,
+            "changed_files": [
+              "index.js",
+              "services/checkinService.js"
+            ]
+          },
+          {
+            "sha": "6c69d10e74505499f6a5dfd9887450fc0f35e389",
+            "message": "⚡️ check chattings uploaded while bot is dead",
+            "date": "2025-06-23T11:22:55Z",
+            "additions": 60,
+            "deletions": 10,
+            "changed_files": [
+              "index.js"
+            ]
+          },
+          {
+            "sha": "78ab3669296812e71f60cc089051b7020c98fbb2",
+            "message": "⚡️ express module added",
+            "date": "2025-06-21T11:17:58Z",
+            "additions": 92584,
+            "deletions": 35,
+            "changed_files": [
+              "node_modules/.package-lock.json",
+              "node_modules/accepts/HISTORY.md",
+              "node_modules/accepts/LICENSE",
+              "node_modules/accepts/README.md",
+              "node_modules/accepts/index.js",
+              "node_modules/accepts/node_modules/mime-db/HISTORY.md",
+              "node_modules/accepts/node_modules/mime-db/LICENSE",
+              "node_modules/accepts/node_modules/mime-db/README.md",
+              "node_modules/accepts/node_modules/mime-db/db.json",
+              "node_modules/accepts/node_modules/mime-db/index.js",
+              "node_modules/accepts/node_modules/mime-db/package.json",
+              "node_modules/accepts/node_modules/mime-types/HISTORY.md",
+              "node_modules/accepts/node_modules/mime-types/LICENSE",
+              "node_modules/accepts/node_modules/mime-types/README.md",
+              "node_modules/accepts/node_modules/mime-types/index.js",
+              "node_modules/accepts/node_modules/mime-types/mimeScore.js",
+              "node_modules/accepts/node_modules/mime-types/package.json",
+              "node_modules/accepts/package.json",
+              "node_modules/body-parser/HISTORY.md",
+              "node_modules/body-parser/LICENSE"
+            ]
+          },
+          {
+            "sha": "8981e6a1f6248d03e9c7dfc1c1d60eec7552ba0c",
+            "message": "🚀 port contain",
+            "date": "2025-06-21T11:14:18Z",
+            "additions": 12,
+            "deletions": 0,
+            "changed_files": [
+              "index.js"
+            ]
+          },
+          {
+            "sha": "c13e084c77aa93f8842f49a7fdea6b1ec38c48e1",
+            "message": "🎉 start",
+            "date": "2025-06-21T11:02:50Z",
+            "additions": 1084113,
+            "deletions": 0,
+            "changed_files": [
+              ".gitignore",
+              "firebase.js",
+              "index.js",
+              "node_modules/.bin/fxparser",
+              "node_modules/.bin/fxparser.cmd",
+              "node_modules/.bin/fxparser.ps1",
+              "node_modules/.bin/mime",
+              "node_modules/.bin/mime.cmd",
+              "node_modules/.bin/mime.ps1",
+              "node_modules/.bin/proto-loader-gen-types",
+              "node_modules/.bin/proto-loader-gen-types.cmd",
+              "node_modules/.bin/proto-loader-gen-types.ps1",
+              "node_modules/.bin/semver",
+              "node_modules/.bin/semver.cmd",
+              "node_modules/.bin/semver.ps1",
+              "node_modules/.bin/uuid",
+              "node_modules/.bin/uuid.cmd",
+              "node_modules/.bin/uuid.ps1",
+              "node_modules/.package-lock.json",
+              "node_modules/@discordjs/builders/LICENSE"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repo_name": "websystem",
+      "full_name": "EunjinLee08/websystem",
+      "html_url": "https://github.com/EunjinLee08/websystem",
+      "description": null,
+      "created_at": "2025-03-20T04:01:54Z",
+      "updated_at": "2025-04-10T04:15:19Z",
+      "pushed_at": "2025-04-10T04:15:16Z",
+      "stars": 0,
+      "forks": 0,
+      "watchers": 0,
+      "open_issues": 0,
+      "default_branch": "main",
+      "main_language": "HTML",
+      "languages": {
+        "HTML": 21688,
+        "CSS": 2399
+      },
+      "readme_summary_source": null,
+      "file_tree_sample": [
+        {
+          "path": "1주차 과제/class_list.html",
+          "size": 641
+        },
+        {
+          "path": "1주차 과제/introduce.html",
+          "size": 661
+        },
+        {
+          "path": "1주차 과제/main.html",
+          "size": 445
+        },
+        {
+          "path": "1주차 과제/profile.jpg",
+          "size": 875980
+        },
+        {
+          "path": "1주차 과제/register.html",
+          "size": 2098
+        },
+        {
+          "path": "1주차 과제/timetable.html",
+          "size": 2688
+        },
+        {
+          "path": "2주차 과제/cell.png",
+          "size": 344678
+        },
+        {
+          "path": "2주차 과제/lab2-1.html",
+          "size": 373
+        },
+        {
+          "path": "2주차 과제/lab2-2.html",
+          "size": 1982
+        },
+        {
+          "path": "2주차 과제/lab2-3.html",
+          "size": 1342
+        },
+        {
+          "path": "2주차 과제/lab2-4.html",
+          "size": 1149
+        },
+        {
+          "path": "2주차 과제/lab2-5.html",
+          "size": 1443
+        },
+        {
+          "path": "2주차 과제/lab2-6.html",
+          "size": 2570
+        },
+        {
+          "path": "2주차 과제/mystyle.css",
+          "size": 217
+        },
+        {
+          "path": "2주차 과제/top.png",
+          "size": 359972
+        },
+        {
+          "path": "3주차 과제/image1.jpg",
+          "size": 49200
+        },
+        {
+          "path": "3주차 과제/image2.png",
+          "size": 192080
+        },
+        {
+          "path": "3주차 과제/image3.jpg",
+          "size": 101607
+        },
+        {
+          "path": "3주차 과제/lab3.css",
+          "size": 2182
+        },
+        {
+          "path": "3주차 과제/lab3.html",
+          "size": 6296
+        }
+      ],
+      "framework_library_analysis": {
+        "dependency_files": [],
+        "detected_frameworks_libraries": {
+          "frontend": [],
+          "backend": [],
+          "ai_ml": [],
+          "database": [],
+          "devops": [],
+          "security": []
+        },
+        "project_signals": {
+          "has_docker": false,
+          "has_github_actions": false,
+          "has_tests": false,
+          "has_frontend_config": false,
+          "has_python_project": false,
+          "has_java_project": false,
+          "has_rust_project": false
+        }
+      },
+      "contribution": {
+        "commit_count_sampled": 5,
+        "total_additions_sampled": 808,
+        "total_deletions_sampled": 7,
+        "top_touched_files": [
+          {
+            "path": "2주차 과제/lab2-6.html",
+            "change_count": 3,
+            "additions": 96,
+            "deletions": 7
+          },
+          {
+            "path": "3주차 과제/image1.jpg",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "3주차 과제/image2.png",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "3주차 과제/image3.jpg",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "3주차 과제/lab3.css",
+            "change_count": 1,
+            "additions": 144,
+            "deletions": 0
+          },
+          {
+            "path": "3주차 과제/lab3.html",
+            "change_count": 1,
+            "additions": 148,
+            "deletions": 0
+          },
+          {
+            "path": "2주차 과제/cell.png",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "2주차 과제/lab2-1.html",
+            "change_count": 1,
+            "additions": 17,
+            "deletions": 0
+          },
+          {
+            "path": "2주차 과제/lab2-2.html",
+            "change_count": 1,
+            "additions": 45,
+            "deletions": 0
+          },
+          {
+            "path": "2주차 과제/lab2-3.html",
+            "change_count": 1,
+            "additions": 39,
+            "deletions": 0
+          },
+          {
+            "path": "2주차 과제/lab2-4.html",
+            "change_count": 1,
+            "additions": 45,
+            "deletions": 0
+          },
+          {
+            "path": "2주차 과제/lab2-5.html",
+            "change_count": 1,
+            "additions": 61,
+            "deletions": 0
+          },
+          {
+            "path": "2주차 과제/mystyle.css",
+            "change_count": 1,
+            "additions": 15,
+            "deletions": 0
+          },
+          {
+            "path": "2주차 과제/top.png",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "1주차 과제/class_list.html",
+            "change_count": 1,
+            "additions": 25,
+            "deletions": 0
+          },
+          {
+            "path": "1주차 과제/introduce.html",
+            "change_count": 1,
+            "additions": 22,
+            "deletions": 0
+          },
+          {
+            "path": "1주차 과제/main.html",
+            "change_count": 1,
+            "additions": 14,
+            "deletions": 0
+          },
+          {
+            "path": "1주차 과제/profile.jpg",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "1주차 과제/register.html",
+            "change_count": 1,
+            "additions": 47,
+            "deletions": 0
+          },
+          {
+            "path": "1주차 과제/timetable.html",
+            "change_count": 1,
+            "additions": 90,
+            "deletions": 0
+          }
+        ],
+        "recent_commits": [
+          {
+            "sha": "bf99b738642054bfbd6f1d78a70c7fe80cfdc75a",
+            "message": "3주차 과제",
+            "date": "2025-04-10T04:15:11Z",
+            "additions": 292,
+            "deletions": 0,
+            "changed_files": [
+              "3주차 과제/image1.jpg",
+              "3주차 과제/image2.png",
+              "3주차 과제/image3.jpg",
+              "3주차 과제/lab3.css",
+              "3주차 과제/lab3.html"
+            ]
+          },
+          {
+            "sha": "5b1b75f2a21ba7425bc59b057807dc79ec6960fd",
+            "message": "second commit edit2",
+            "date": "2025-03-27T07:32:05Z",
+            "additions": 9,
+            "deletions": 5,
+            "changed_files": [
+              "2주차 과제/lab2-6.html"
+            ]
+          },
+          {
+            "sha": "eff383f921039d86fb6e724273a66b836376949e",
+            "message": "second commit edit",
+            "date": "2025-03-27T07:25:52Z",
+            "additions": 2,
+            "deletions": 2,
+            "changed_files": [
+              "2주차 과제/lab2-6.html"
+            ]
+          },
+          {
+            "sha": "6454a2ca3f57e6d32f65f5522aa548479e1491ad",
+            "message": "second commit",
+            "date": "2025-03-27T05:34:36Z",
+            "additions": 307,
+            "deletions": 0,
+            "changed_files": [
+              "2주차 과제/cell.png",
+              "2주차 과제/lab2-1.html",
+              "2주차 과제/lab2-2.html",
+              "2주차 과제/lab2-3.html",
+              "2주차 과제/lab2-4.html",
+              "2주차 과제/lab2-5.html",
+              "2주차 과제/lab2-6.html",
+              "2주차 과제/mystyle.css",
+              "2주차 과제/top.png"
+            ]
+          },
+          {
+            "sha": "0ff0f89066e394d40b16af8af7a6cb270df6f3aa",
+            "message": "first commit",
+            "date": "2025-03-20T04:04:45Z",
+            "additions": 198,
+            "deletions": 0,
+            "changed_files": [
+              "1주차 과제/class_list.html",
+              "1주차 과제/introduce.html",
+              "1주차 과제/main.html",
+              "1주차 과제/profile.jpg",
+              "1주차 과제/register.html",
+              "1주차 과제/timetable.html"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repo_name": "testforgitmoji",
+      "full_name": "EunjinLee08/testforgitmoji",
+      "html_url": "https://github.com/EunjinLee08/testforgitmoji",
+      "description": null,
+      "created_at": "2025-01-25T12:50:38Z",
+      "updated_at": "2025-01-25T12:55:25Z",
+      "pushed_at": "2025-01-25T12:55:21Z",
+      "stars": 0,
+      "forks": 0,
+      "watchers": 0,
+      "open_issues": 0,
+      "default_branch": "main",
+      "main_language": "C++",
+      "languages": {
+        "C++": 24091,
+        "CMake": 19716,
+        "Dart": 5232,
+        "Swift": 1812,
+        "C": 1425,
+        "HTML": 1214,
+        "Kotlin": 121,
+        "Objective-C": 38
+      },
+      "readme_summary_source": "# pomodoro\n\nA new Flutter project.\n\n## Getting Started\n\nThis project is a starting point for a Flutter application.\n\nA few resources to get you started if this is your first Flutter project:\n\n- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)\n- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)\n\nFor help getting started with Flutter development, view the\n[online documentation](https://docs.flutter.dev/), which offers tutorials,\nsamples, guidance on mobile development, and a full API reference.\n# testforgitmoji\n",
+      "file_tree_sample": [
+        {
+          "path": ".gitignore",
+          "size": 709
+        },
+        {
+          "path": ".metadata",
+          "size": 1706
+        },
+        {
+          "path": "README.md",
+          "size": 568
+        },
+        {
+          "path": "analysis_options.yaml",
+          "size": 1420
+        },
+        {
+          "path": "android/.gitignore",
+          "size": 247
+        },
+        {
+          "path": "android/app/build.gradle",
+          "size": 1364
+        },
+        {
+          "path": "android/app/src/debug/AndroidManifest.xml",
+          "size": 378
+        },
+        {
+          "path": "android/app/src/main/AndroidManifest.xml",
+          "size": 2196
+        },
+        {
+          "path": "android/app/src/main/kotlin/com/example/pomodoro/MainActivity.kt",
+          "size": 121
+        },
+        {
+          "path": "android/app/src/main/res/drawable-v21/launch_background.xml",
+          "size": 438
+        },
+        {
+          "path": "android/app/src/main/res/drawable/launch_background.xml",
+          "size": 434
+        },
+        {
+          "path": "android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+          "size": 544
+        },
+        {
+          "path": "android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+          "size": 442
+        },
+        {
+          "path": "android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+          "size": 721
+        },
+        {
+          "path": "android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+          "size": 1031
+        },
+        {
+          "path": "android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+          "size": 1443
+        },
+        {
+          "path": "android/app/src/main/res/values-night/styles.xml",
+          "size": 995
+        },
+        {
+          "path": "android/app/src/main/res/values/styles.xml",
+          "size": 996
+        },
+        {
+          "path": "android/app/src/profile/AndroidManifest.xml",
+          "size": 378
+        },
+        {
+          "path": "android/build.gradle",
+          "size": 322
+        },
+        {
+          "path": "android/gradle.properties",
+          "size": 135
+        },
+        {
+          "path": "android/gradle/wrapper/gradle-wrapper.properties",
+          "size": 200
+        },
+        {
+          "path": "android/settings.gradle",
+          "size": 727
+        },
+        {
+          "path": "ios/.gitignore",
+          "size": 569
+        },
+        {
+          "path": "ios/Flutter/AppFrameworkInfo.plist",
+          "size": 774
+        },
+        {
+          "path": "ios/Flutter/Debug.xcconfig",
+          "size": 30
+        },
+        {
+          "path": "ios/Flutter/Release.xcconfig",
+          "size": 30
+        },
+        {
+          "path": "ios/Runner.xcodeproj/project.pbxproj",
+          "size": 23654
+        },
+        {
+          "path": "ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+          "size": 135
+        },
+        {
+          "path": "ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+          "size": 238
+        },
+        {
+          "path": "ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+          "size": 226
+        },
+        {
+          "path": "ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme",
+          "size": 3647
+        },
+        {
+          "path": "ios/Runner.xcworkspace/contents.xcworkspacedata",
+          "size": 152
+        },
+        {
+          "path": "ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+          "size": 238
+        },
+        {
+          "path": "ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+          "size": 226
+        },
+        {
+          "path": "ios/Runner/AppDelegate.swift",
+          "size": 391
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+          "size": 2519
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png",
+          "size": 10932
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png",
+          "size": 295
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png",
+          "size": 406
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png",
+          "size": 450
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png",
+          "size": 282
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png",
+          "size": 462
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png",
+          "size": 704
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png",
+          "size": 406
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png",
+          "size": 586
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png",
+          "size": 862
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png",
+          "size": 862
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png",
+          "size": 1674
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png",
+          "size": 762
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png",
+          "size": 1226
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png",
+          "size": 1418
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json",
+          "size": 391
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png",
+          "size": 68
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png",
+          "size": 68
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png",
+          "size": 68
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
+          "size": 336
+        },
+        {
+          "path": "ios/Runner/Base.lproj/LaunchScreen.storyboard",
+          "size": 2377
+        },
+        {
+          "path": "ios/Runner/Base.lproj/Main.storyboard",
+          "size": 1605
+        },
+        {
+          "path": "ios/Runner/Info.plist",
+          "size": 1643
+        },
+        {
+          "path": "ios/Runner/Runner-Bridging-Header.h",
+          "size": 38
+        },
+        {
+          "path": "ios/RunnerTests/RunnerTests.swift",
+          "size": 285
+        },
+        {
+          "path": "lib/main.dart",
+          "size": 691
+        },
+        {
+          "path": "lib/screens/home_screen.dart",
+          "size": 4178
+        },
+        {
+          "path": "linux/.gitignore",
+          "size": 18
+        },
+        {
+          "path": "linux/CMakeLists.txt",
+          "size": 4755
+        },
+        {
+          "path": "linux/flutter/CMakeLists.txt",
+          "size": 2815
+        },
+        {
+          "path": "linux/flutter/generated_plugin_registrant.cc",
+          "size": 161
+        },
+        {
+          "path": "linux/flutter/generated_plugin_registrant.h",
+          "size": 303
+        },
+        {
+          "path": "linux/flutter/generated_plugins.cmake",
+          "size": 739
+        },
+        {
+          "path": "linux/runner/CMakeLists.txt",
+          "size": 974
+        },
+        {
+          "path": "linux/runner/main.cc",
+          "size": 180
+        },
+        {
+          "path": "linux/runner/my_application.cc",
+          "size": 4750
+        },
+        {
+          "path": "linux/runner/my_application.h",
+          "size": 388
+        },
+        {
+          "path": "macos/.gitignore",
+          "size": 89
+        },
+        {
+          "path": "macos/Flutter/Flutter-Debug.xcconfig",
+          "size": 48
+        },
+        {
+          "path": "macos/Flutter/Flutter-Release.xcconfig",
+          "size": 48
+        },
+        {
+          "path": "macos/Flutter/GeneratedPluginRegistrant.swift",
+          "size": 147
+        },
+        {
+          "path": "macos/Runner.xcodeproj/project.pbxproj",
+          "size": 26359
+        },
+        {
+          "path": "macos/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+          "size": 238
+        },
+        {
+          "path": "macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme",
+          "size": 3655
+        },
+        {
+          "path": "macos/Runner.xcworkspace/contents.xcworkspacedata",
+          "size": 152
+        },
+        {
+          "path": "macos/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+          "size": 238
+        },
+        {
+          "path": "macos/Runner/AppDelegate.swift",
+          "size": 311
+        },
+        {
+          "path": "macos/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+          "size": 1291
+        },
+        {
+          "path": "macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_1024.png",
+          "size": 102994
+        },
+        {
+          "path": "macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_128.png",
+          "size": 5680
+        },
+        {
+          "path": "macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_16.png",
+          "size": 520
+        },
+        {
+          "path": "macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_256.png",
+          "size": 14142
+        },
+        {
+          "path": "macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_32.png",
+          "size": 1066
+        },
+        {
+          "path": "macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_512.png",
+          "size": 36406
+        },
+        {
+          "path": "macos/Runner/Assets.xcassets/AppIcon.appiconset/app_icon_64.png",
+          "size": 2218
+        },
+        {
+          "path": "macos/Runner/Base.lproj/MainMenu.xib",
+          "size": 23729
+        },
+        {
+          "path": "macos/Runner/Configs/AppInfo.xcconfig",
+          "size": 603
+        },
+        {
+          "path": "macos/Runner/Configs/Debug.xcconfig",
+          "size": 77
+        },
+        {
+          "path": "macos/Runner/Configs/Release.xcconfig",
+          "size": 79
+        },
+        {
+          "path": "macos/Runner/Configs/Warnings.xcconfig",
+          "size": 580
+        },
+        {
+          "path": "macos/Runner/DebugProfile.entitlements",
+          "size": 348
+        },
+        {
+          "path": "macos/Runner/Info.plist",
+          "size": 1060
+        },
+        {
+          "path": "macos/Runner/MainFlutterWindow.swift",
+          "size": 388
+        }
+      ],
+      "framework_library_analysis": {
+        "dependency_files": [
+          "android/app/build.gradle",
+          "android/build.gradle"
+        ],
+        "detected_frameworks_libraries": {
+          "frontend": [],
+          "backend": [
+            "gin"
+          ],
+          "ai_ml": [],
+          "database": [],
+          "devops": [
+            "ci"
+          ],
+          "security": []
+        },
+        "project_signals": {
+          "has_docker": false,
+          "has_github_actions": false,
+          "has_tests": true,
+          "has_frontend_config": false,
+          "has_python_project": false,
+          "has_java_project": true,
+          "has_rust_project": false
+        }
+      },
+      "contribution": {
+        "commit_count_sampled": 2,
+        "total_additions_sampled": 4957,
+        "total_deletions_sampled": 0,
+        "top_touched_files": [
+          {
+            "path": ".gitignore",
+            "change_count": 1,
+            "additions": 45,
+            "deletions": 0
+          },
+          {
+            "path": ".metadata",
+            "change_count": 1,
+            "additions": 45,
+            "deletions": 0
+          },
+          {
+            "path": "analysis_options.yaml",
+            "change_count": 1,
+            "additions": 28,
+            "deletions": 0
+          },
+          {
+            "path": "android/.gitignore",
+            "change_count": 1,
+            "additions": 13,
+            "deletions": 0
+          },
+          {
+            "path": "android/app/build.gradle",
+            "change_count": 1,
+            "additions": 44,
+            "deletions": 0
+          },
+          {
+            "path": "android/app/src/debug/AndroidManifest.xml",
+            "change_count": 1,
+            "additions": 7,
+            "deletions": 0
+          },
+          {
+            "path": "android/app/src/main/AndroidManifest.xml",
+            "change_count": 1,
+            "additions": 45,
+            "deletions": 0
+          },
+          {
+            "path": "android/app/src/main/kotlin/com/example/pomodoro/MainActivity.kt",
+            "change_count": 1,
+            "additions": 5,
+            "deletions": 0
+          },
+          {
+            "path": "android/app/src/main/res/drawable-v21/launch_background.xml",
+            "change_count": 1,
+            "additions": 12,
+            "deletions": 0
+          },
+          {
+            "path": "android/app/src/main/res/drawable/launch_background.xml",
+            "change_count": 1,
+            "additions": 12,
+            "deletions": 0
+          },
+          {
+            "path": "android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "android/app/src/main/res/values-night/styles.xml",
+            "change_count": 1,
+            "additions": 18,
+            "deletions": 0
+          },
+          {
+            "path": "android/app/src/main/res/values/styles.xml",
+            "change_count": 1,
+            "additions": 18,
+            "deletions": 0
+          },
+          {
+            "path": "android/app/src/profile/AndroidManifest.xml",
+            "change_count": 1,
+            "additions": 7,
+            "deletions": 0
+          },
+          {
+            "path": "android/build.gradle",
+            "change_count": 1,
+            "additions": 18,
+            "deletions": 0
+          },
+          {
+            "path": "android/gradle.properties",
+            "change_count": 1,
+            "additions": 3,
+            "deletions": 0
+          },
+          {
+            "path": "android/gradle/wrapper/gradle-wrapper.properties",
+            "change_count": 1,
+            "additions": 5,
+            "deletions": 0
+          },
+          {
+            "path": "android/settings.gradle",
+            "change_count": 1,
+            "additions": 25,
+            "deletions": 0
+          },
+          {
+            "path": "ios/.gitignore",
+            "change_count": 1,
+            "additions": 34,
+            "deletions": 0
+          },
+          {
+            "path": "ios/Flutter/AppFrameworkInfo.plist",
+            "change_count": 1,
+            "additions": 26,
+            "deletions": 0
+          },
+          {
+            "path": "ios/Flutter/Debug.xcconfig",
+            "change_count": 1,
+            "additions": 1,
+            "deletions": 0
+          },
+          {
+            "path": "ios/Flutter/Release.xcconfig",
+            "change_count": 1,
+            "additions": 1,
+            "deletions": 0
+          },
+          {
+            "path": "ios/Runner.xcodeproj/project.pbxproj",
+            "change_count": 1,
+            "additions": 616,
+            "deletions": 0
+          },
+          {
+            "path": "ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+            "change_count": 1,
+            "additions": 7,
+            "deletions": 0
+          },
+          {
+            "path": "ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+            "change_count": 1,
+            "additions": 8,
+            "deletions": 0
+          },
+          {
+            "path": "ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+            "change_count": 1,
+            "additions": 8,
+            "deletions": 0
+          }
+        ],
+        "recent_commits": [
+          {
+            "sha": "b2fc1a927d5fd6a93f4f17a0b29f6b27077dcdf7",
+            "message": "✨ New features",
+            "date": "2025-01-25T12:54:31Z",
+            "additions": 4940,
+            "deletions": 0,
+            "changed_files": [
+              ".gitignore",
+              ".metadata",
+              "analysis_options.yaml",
+              "android/.gitignore",
+              "android/app/build.gradle",
+              "android/app/src/debug/AndroidManifest.xml",
+              "android/app/src/main/AndroidManifest.xml",
+              "android/app/src/main/kotlin/com/example/pomodoro/MainActivity.kt",
+              "android/app/src/main/res/drawable-v21/launch_background.xml",
+              "android/app/src/main/res/drawable/launch_background.xml",
+              "android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+              "android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+              "android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+              "android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+              "android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+              "android/app/src/main/res/values-night/styles.xml",
+              "android/app/src/main/res/values/styles.xml",
+              "android/app/src/profile/AndroidManifest.xml",
+              "android/build.gradle",
+              "android/gradle.properties"
+            ]
+          },
+          {
+            "sha": "d3958f6c9060e2e5328a72122cf8035fba614e64",
+            "message": "first commit",
+            "date": "2025-01-25T12:52:02Z",
+            "additions": 17,
+            "deletions": 0,
+            "changed_files": [
+              "README.md"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repo_name": "online_flutter_smwu",
+      "full_name": "EunjinLee08/online_flutter_smwu",
+      "html_url": "https://github.com/EunjinLee08/online_flutter_smwu",
+      "description": null,
+      "created_at": "2025-01-15T05:46:40Z",
+      "updated_at": "2025-01-25T12:34:16Z",
+      "pushed_at": "2025-01-24T07:56:51Z",
+      "stars": 0,
+      "forks": 0,
+      "watchers": 0,
+      "open_issues": 0,
+      "default_branch": "main",
+      "main_language": "Dart",
+      "languages": {
+        "Dart": 97503,
+        "HTML": 1236,
+        "Swift": 676,
+        "Kotlin": 132,
+        "Objective-C": 38
+      },
+      "readme_summary_source": "# online_lecture_smwu\r\n\r\nA new Flutter project.\r\n\r\n## Getting Started\r\n\r\nThis project is a starting point for a Flutter application.\r\n\r\nA few resources to get you started if this is your first Flutter project:\r\n\r\n- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)\r\n- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)\r\n\r\nFor help getting started with Flutter development, view the\r\n[online documentation](https://docs.flutter.dev/), which offers tutorials,\r\nsamples, guidance on mobile development, and a full API reference.\r\n#\u0000 \u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000_\u0000f\u0000l\u0000u\u0000t\u0000t\u0000e\u0000r\u0000_\u0000s\u0000m\u0000w\u0000u\u0000\r\u0000\n\u0000",
+      "file_tree_sample": [
+        {
+          "path": ".gitignore",
+          "size": 709
+        },
+        {
+          "path": ".metadata",
+          "size": 1260
+        },
+        {
+          "path": "README.md",
+          "size": 624
+        },
+        {
+          "path": "analysis_options.yaml",
+          "size": 1420
+        },
+        {
+          "path": "android/.gitignore",
+          "size": 247
+        },
+        {
+          "path": "android/app/build.gradle",
+          "size": 1386
+        },
+        {
+          "path": "android/app/src/debug/AndroidManifest.xml",
+          "size": 378
+        },
+        {
+          "path": "android/app/src/main/AndroidManifest.xml",
+          "size": 2255
+        },
+        {
+          "path": "android/app/src/main/kotlin/com/example/online_lecture_smwu/MainActivity.kt",
+          "size": 132
+        },
+        {
+          "path": "android/app/src/main/res/drawable-v21/launch_background.xml",
+          "size": 438
+        },
+        {
+          "path": "android/app/src/main/res/drawable/launch_background.xml",
+          "size": 434
+        },
+        {
+          "path": "android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+          "size": 544
+        },
+        {
+          "path": "android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+          "size": 442
+        },
+        {
+          "path": "android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+          "size": 721
+        },
+        {
+          "path": "android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+          "size": 1031
+        },
+        {
+          "path": "android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+          "size": 1443
+        },
+        {
+          "path": "android/app/src/main/res/values-night/styles.xml",
+          "size": 995
+        },
+        {
+          "path": "android/app/src/main/res/values/styles.xml",
+          "size": 996
+        },
+        {
+          "path": "android/app/src/profile/AndroidManifest.xml",
+          "size": 378
+        },
+        {
+          "path": "android/build.gradle",
+          "size": 322
+        },
+        {
+          "path": "android/gradle.properties",
+          "size": 135
+        },
+        {
+          "path": "android/gradle/wrapper/gradle-wrapper.properties",
+          "size": 200
+        },
+        {
+          "path": "android/settings.gradle",
+          "size": 727
+        },
+        {
+          "path": "assets/checked_box.png",
+          "size": 1029
+        },
+        {
+          "path": "assets/commerce/스크린샷 2025-01-24 142640.png",
+          "size": 75696
+        },
+        {
+          "path": "assets/commerce/스크린샷 2025-01-24 142650.png",
+          "size": 69630
+        },
+        {
+          "path": "assets/commerce/스크린샷 2025-01-24 142658.png",
+          "size": 71847
+        },
+        {
+          "path": "assets/commerce/스크린샷 2025-01-24 142704.png",
+          "size": 62238
+        },
+        {
+          "path": "assets/commerce/스크린샷 2025-01-24 142709.png",
+          "size": 86307
+        },
+        {
+          "path": "assets/commerce/스크린샷 2025-01-24 142715.png",
+          "size": 68893
+        },
+        {
+          "path": "assets/flutter_graph.png",
+          "size": 58703
+        },
+        {
+          "path": "assets/flutter_windows.png",
+          "size": 61085
+        },
+        {
+          "path": "assets/lecture_flutter_image.png",
+          "size": 337142
+        },
+        {
+          "path": "assets/unchecked_box.png",
+          "size": 692
+        },
+        {
+          "path": "ios/.gitignore",
+          "size": 569
+        },
+        {
+          "path": "ios/Flutter/AppFrameworkInfo.plist",
+          "size": 774
+        },
+        {
+          "path": "ios/Flutter/Debug.xcconfig",
+          "size": 30
+        },
+        {
+          "path": "ios/Flutter/Release.xcconfig",
+          "size": 30
+        },
+        {
+          "path": "ios/Runner.xcodeproj/project.pbxproj",
+          "size": 23708
+        },
+        {
+          "path": "ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata",
+          "size": 135
+        },
+        {
+          "path": "ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+          "size": 238
+        },
+        {
+          "path": "ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+          "size": 226
+        },
+        {
+          "path": "ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme",
+          "size": 3647
+        },
+        {
+          "path": "ios/Runner.xcworkspace/contents.xcworkspacedata",
+          "size": 152
+        },
+        {
+          "path": "ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist",
+          "size": 238
+        },
+        {
+          "path": "ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings",
+          "size": 226
+        },
+        {
+          "path": "ios/Runner/AppDelegate.swift",
+          "size": 391
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json",
+          "size": 2519
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png",
+          "size": 10932
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png",
+          "size": 295
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png",
+          "size": 406
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png",
+          "size": 450
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png",
+          "size": 282
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png",
+          "size": 462
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png",
+          "size": 704
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png",
+          "size": 406
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png",
+          "size": 586
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png",
+          "size": 862
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png",
+          "size": 862
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png",
+          "size": 1674
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png",
+          "size": 762
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png",
+          "size": 1226
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png",
+          "size": 1418
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json",
+          "size": 391
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png",
+          "size": 68
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png",
+          "size": 68
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png",
+          "size": 68
+        },
+        {
+          "path": "ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md",
+          "size": 336
+        },
+        {
+          "path": "ios/Runner/Base.lproj/LaunchScreen.storyboard",
+          "size": 2377
+        },
+        {
+          "path": "ios/Runner/Base.lproj/Main.storyboard",
+          "size": 1605
+        },
+        {
+          "path": "ios/Runner/Info.plist",
+          "size": 1665
+        },
+        {
+          "path": "ios/Runner/Runner-Bridging-Header.h",
+          "size": 38
+        },
+        {
+          "path": "ios/RunnerTests/RunnerTests.swift",
+          "size": 285
+        },
+        {
+          "path": "lib/custom_scroll_behavior.dart",
+          "size": 276
+        },
+        {
+          "path": "lib/main.dart",
+          "size": 707
+        },
+        {
+          "path": "lib/screen/bottom_sheet/bottom_sheet_screen.dart",
+          "size": 917
+        },
+        {
+          "path": "lib/screen/button_screen.dart",
+          "size": 14814
+        },
+        {
+          "path": "lib/screen/checkbox/checkbox_screen.dart",
+          "size": 1095
+        },
+        {
+          "path": "lib/screen/click/click_screen.dart",
+          "size": 1991
+        },
+        {
+          "path": "lib/screen/column_practice_screen.dart",
+          "size": 1023
+        },
+        {
+          "path": "lib/screen/column_row_advanced_screen.dart",
+          "size": 2549
+        },
+        {
+          "path": "lib/screen/column_screen.dart",
+          "size": 964
+        },
+        {
+          "path": "lib/screen/commerce/assets_path.dart",
+          "size": 488
+        },
+        {
+          "path": "lib/screen/commerce/cart/cart_screen.dart",
+          "size": 1007
+        },
+        {
+          "path": "lib/screen/commerce/cart/cart_view_model.dart",
+          "size": 710
+        },
+        {
+          "path": "lib/screen/commerce/category/category_screen.dart",
+          "size": 1316
+        },
+        {
+          "path": "lib/screen/commerce/home/home_screen.dart",
+          "size": 2800
+        },
+        {
+          "path": "lib/screen/commerce/home/widgets/home_image.dart",
+          "size": 1779
+        },
+        {
+          "path": "lib/screen/commerce/home/widgets/home_short_cut.dart",
+          "size": 1087
+        },
+        {
+          "path": "lib/screen/commerce/home/widgets/home_subtitle.dart",
+          "size": 591
+        },
+        {
+          "path": "lib/screen/commerce/home/widgets/product_greed.dart",
+          "size": 1888
+        },
+        {
+          "path": "lib/screen/commerce/home/widgets/product_horizontal.dart",
+          "size": 1849
+        },
+        {
+          "path": "lib/screen/commerce/model/product_model.dart",
+          "size": 915
+        },
+        {
+          "path": "lib/screen/commerce/navigation/navigation_screen.dart",
+          "size": 2330
+        },
+        {
+          "path": "lib/screen/commerce/util.dart",
+          "size": 270
+        },
+        {
+          "path": "lib/screen/container_practice_screen.dart",
+          "size": 835
+        },
+        {
+          "path": "lib/screen/container_screen.dart",
+          "size": 761
+        },
+        {
+          "path": "lib/screen/default_tab_controller/default_tab_controller_screen.dart",
+          "size": 1791
+        },
+        {
+          "path": "lib/screen/dialog/dialog_screen.dart",
+          "size": 1697
+        },
+        {
+          "path": "lib/screen/image/image_screen.dart",
+          "size": 1758
+        }
+      ],
+      "framework_library_analysis": {
+        "dependency_files": [
+          "android/app/build.gradle",
+          "android/build.gradle"
+        ],
+        "detected_frameworks_libraries": {
+          "frontend": [],
+          "backend": [
+            "gin"
+          ],
+          "ai_ml": [],
+          "database": [],
+          "devops": [
+            "ci"
+          ],
+          "security": []
+        },
+        "project_signals": {
+          "has_docker": false,
+          "has_github_actions": false,
+          "has_tests": true,
+          "has_frontend_config": false,
+          "has_python_project": false,
+          "has_java_project": true,
+          "has_rust_project": false
+        }
+      },
+      "contribution": {
+        "commit_count_sampled": 26,
+        "total_additions_sampled": 5591,
+        "total_deletions_sampled": 98,
+        "top_touched_files": [
+          {
+            "path": "lib/screen/button_screen.dart",
+            "change_count": 16,
+            "additions": 493,
+            "deletions": 85
+          },
+          {
+            "path": "pubspec.yaml",
+            "change_count": 5,
+            "additions": 99,
+            "deletions": 0
+          },
+          {
+            "path": "test/widget_test.dart",
+            "change_count": 5,
+            "additions": 45,
+            "deletions": 1
+          },
+          {
+            "path": "pubspec.lock",
+            "change_count": 4,
+            "additions": 306,
+            "deletions": 0
+          },
+          {
+            "path": "test/collections.dart",
+            "change_count": 4,
+            "additions": 107,
+            "deletions": 2
+          },
+          {
+            "path": "lib/main.dart",
+            "change_count": 3,
+            "additions": 32,
+            "deletions": 1
+          },
+          {
+            "path": "lib/screen/network/member_detail_screen.dart",
+            "change_count": 2,
+            "additions": 129,
+            "deletions": 6
+          },
+          {
+            "path": "lib/screen/network/member_list_screen.dart",
+            "change_count": 2,
+            "additions": 140,
+            "deletions": 1
+          },
+          {
+            "path": "lib/screen/network/member_register_screen.dart",
+            "change_count": 2,
+            "additions": 69,
+            "deletions": 1
+          },
+          {
+            "path": "android/app/src/main/AndroidManifest.xml",
+            "change_count": 2,
+            "additions": 46,
+            "deletions": 0
+          },
+          {
+            "path": "lib/screen/listview/listview_practice_screen.dart",
+            "change_count": 2,
+            "additions": 31,
+            "deletions": 1
+          },
+          {
+            "path": "lib/screen/listview/listview_screen.dart",
+            "change_count": 2,
+            "additions": 135,
+            "deletions": 0
+          },
+          {
+            "path": "lib/screen/image/image_screen.dart",
+            "change_count": 2,
+            "additions": 64,
+            "deletions": 0
+          },
+          {
+            "path": "lib/screen/stack/stack_practice_screen.dart",
+            "change_count": 2,
+            "additions": 81,
+            "deletions": 0
+          },
+          {
+            "path": "lib/screen/stack/stack_screen.dart",
+            "change_count": 2,
+            "additions": 56,
+            "deletions": 0
+          },
+          {
+            "path": "lib/screen/text/text_screen.dart",
+            "change_count": 2,
+            "additions": 36,
+            "deletions": 0
+          },
+          {
+            "path": "lib/screen/text/text_screen_practice.dart",
+            "change_count": 2,
+            "additions": 30,
+            "deletions": 0
+          },
+          {
+            "path": "assets/commerce/스크린샷 2025-01-24 142640.png",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "assets/commerce/스크린샷 2025-01-24 142650.png",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "assets/commerce/스크린샷 2025-01-24 142658.png",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "assets/commerce/스크린샷 2025-01-24 142704.png",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "assets/commerce/스크린샷 2025-01-24 142709.png",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "assets/commerce/스크린샷 2025-01-24 142715.png",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "lib/screen/commerce/assets_path.dart",
+            "change_count": 1,
+            "additions": 8,
+            "deletions": 0
+          },
+          {
+            "path": "lib/screen/commerce/cart/cart_screen.dart",
+            "change_count": 1,
+            "additions": 42,
+            "deletions": 0
+          },
+          {
+            "path": "lib/screen/commerce/cart/cart_view_model.dart",
+            "change_count": 1,
+            "additions": 29,
+            "deletions": 0
+          },
+          {
+            "path": "lib/screen/commerce/category/category_screen.dart",
+            "change_count": 1,
+            "additions": 57,
+            "deletions": 0
+          },
+          {
+            "path": "lib/screen/commerce/home/home_screen.dart",
+            "change_count": 1,
+            "additions": 59,
+            "deletions": 0
+          },
+          {
+            "path": "lib/screen/commerce/home/widgets/home_image.dart",
+            "change_count": 1,
+            "additions": 69,
+            "deletions": 0
+          },
+          {
+            "path": "lib/screen/commerce/home/widgets/home_short_cut.dart",
+            "change_count": 1,
+            "additions": 38,
+            "deletions": 0
+          }
+        ],
+        "recent_commits": [
+          {
+            "sha": "31324349c09a06c4686483a54f2c112f26dd677a",
+            "message": "commerce commit",
+            "date": "2025-01-24T07:56:50Z",
+            "additions": 627,
+            "deletions": 0,
+            "changed_files": [
+              "assets/commerce/스크린샷 2025-01-24 142640.png",
+              "assets/commerce/스크린샷 2025-01-24 142650.png",
+              "assets/commerce/스크린샷 2025-01-24 142658.png",
+              "assets/commerce/스크린샷 2025-01-24 142704.png",
+              "assets/commerce/스크린샷 2025-01-24 142709.png",
+              "assets/commerce/스크린샷 2025-01-24 142715.png",
+              "lib/screen/button_screen.dart",
+              "lib/screen/commerce/assets_path.dart",
+              "lib/screen/commerce/cart/cart_screen.dart",
+              "lib/screen/commerce/cart/cart_view_model.dart",
+              "lib/screen/commerce/category/category_screen.dart",
+              "lib/screen/commerce/home/home_screen.dart",
+              "lib/screen/commerce/home/widgets/home_image.dart",
+              "lib/screen/commerce/home/widgets/home_short_cut.dart",
+              "lib/screen/commerce/home/widgets/home_subtitle.dart",
+              "lib/screen/commerce/home/widgets/product_greed.dart",
+              "lib/screen/commerce/home/widgets/product_horizontal.dart",
+              "lib/screen/commerce/model/product_model.dart",
+              "lib/screen/commerce/navigation/navigation_screen.dart",
+              "lib/screen/commerce/util.dart"
+            ]
+          },
+          {
+            "sha": "5630e328bfd9002cfa0c2cc15824571dd5677622",
+            "message": "UI commit",
+            "date": "2025-01-23T07:46:02Z",
+            "additions": 116,
+            "deletions": 0,
+            "changed_files": [
+              "assets/flutter_graph.png",
+              "assets/flutter_windows.png",
+              "lib/screen/button_screen.dart",
+              "lib/screen/ui_exam.dart"
+            ]
+          },
+          {
+            "sha": "b861803a1b08e2344c33e2bfb23ff27b46dba4bf",
+            "message": "state management commit",
+            "date": "2025-01-23T06:45:05Z",
+            "additions": 410,
+            "deletions": 1,
+            "changed_files": [
+              "lib/main.dart",
+              "lib/screen/button_screen.dart",
+              "lib/screen/state_management/get/get_controller",
+              "lib/screen/state_management/get/get_x_screen.dart",
+              "lib/screen/state_management/get/get_x_second_screen.dart",
+              "lib/screen/state_management/get/my_controller.dart",
+              "lib/screen/state_management/notifier/notifier_screen.dart",
+              "lib/screen/state_management/notifier/notifier_second_screen.dart",
+              "lib/screen/state_management/notifier/notifier_view_model.dart",
+              "lib/screen/state_management/provider/counter_model.dart",
+              "lib/screen/state_management/provider/provider_screen.dart",
+              "lib/screen/state_management/provider/provider_second_screen.dart",
+              "lib/screen/state_management/state_management_screen.dart",
+              "pubspec.lock",
+              "pubspec.yaml"
+            ]
+          },
+          {
+            "sha": "977b694d25cc90eacc8bcb85397e6b040ce7b360",
+            "message": "bottom sheet commit",
+            "date": "2025-01-22T08:07:59Z",
+            "additions": 47,
+            "deletions": 0,
+            "changed_files": [
+              "lib/screen/bottom_sheet/bottom_sheet_screen.dart",
+              "lib/screen/button_screen.dart"
+            ]
+          },
+          {
+            "sha": "486aedaac1646c916c2c949fb725a695357684cc",
+            "message": "dialog commit",
+            "date": "2025-01-22T07:37:08Z",
+            "additions": 67,
+            "deletions": 0,
+            "changed_files": [
+              "lib/screen/button_screen.dart",
+              "lib/screen/dialog/dialog_screen.dart"
+            ]
+          },
+          {
+            "sha": "4aafa19961712acc706fea16db7c2ca57d5a56e3",
+            "message": "default tap controller commit",
+            "date": "2025-01-22T07:23:00Z",
+            "additions": 89,
+            "deletions": 0,
+            "changed_files": [
+              "lib/screen/button_screen.dart",
+              "lib/screen/default_tab_controller/default_tab_controller_screen.dart"
+            ]
+          },
+          {
+            "sha": "075d791ba081ce3cd0ce2c2a8202353da8f66894",
+            "message": "tabbar commit",
+            "date": "2025-01-22T07:05:41Z",
+            "additions": 97,
+            "deletions": 0,
+            "changed_files": [
+              "lib/screen/button_screen.dart",
+              "lib/screen/tabbar/tab_bar_screen.dart"
+            ]
+          },
+          {
+            "sha": "4e0c68db7f3ca89656e8bd6976e28e429e52de55",
+            "message": "pageview commit",
+            "date": "2025-01-22T06:15:45Z",
+            "additions": 97,
+            "deletions": 0,
+            "changed_files": [
+              "lib/custom_scroll_behavior.dart",
+              "lib/main.dart",
+              "lib/screen/button_screen.dart",
+              "lib/screen/pageview/pageview_screen.dart"
+            ]
+          },
+          {
+            "sha": "ca55061c14bcebacd267a001dd4e1a8d1450df24",
+            "message": "member delete commit",
+            "date": "2025-01-22T05:20:36Z",
+            "additions": 23,
+            "deletions": 8,
+            "changed_files": [
+              "lib/screen/network/member_detail_screen.dart",
+              "lib/screen/network/member_list_screen.dart",
+              "lib/screen/network/member_register_screen.dart"
+            ]
+          },
+          {
+            "sha": "bbdc8bf1e5bcf2289e50844015946e0d48c0347a",
+            "message": "network commit",
+            "date": "2025-01-22T04:06:10Z",
+            "additions": 430,
+            "deletions": 0,
+            "changed_files": [
+              "android/app/src/main/AndroidManifest.xml",
+              "lib/screen/button_screen.dart",
+              "lib/screen/network/member_detail_screen.dart",
+              "lib/screen/network/member_list_screen.dart",
+              "lib/screen/network/member_model.dart",
+              "lib/screen/network/member_register_screen.dart",
+              "lib/screen/network/network_screen.dart",
+              "pubspec.lock",
+              "pubspec.yaml"
+            ]
+          },
+          {
+            "sha": "686751d37cca987ac9742975ce9dea067539b705",
+            "message": "todo list commit",
+            "date": "2025-01-20T05:43:17Z",
+            "additions": 122,
+            "deletions": 0,
+            "changed_files": [
+              "lib/screen/button_screen.dart",
+              "lib/screen/todo/todo_model.dart",
+              "lib/screen/todo/todo_screen.dart"
+            ]
+          },
+          {
+            "sha": "ef6a3c61c8d39c401fadaec8816d8d3561954d62",
+            "message": "oop1 commit",
+            "date": "2025-01-17T07:38:33Z",
+            "additions": 59,
+            "deletions": 0,
+            "changed_files": [
+              "test/oop/person.dart",
+              "test/oop/product.dart",
+              "test/widget_test.dart"
+            ]
+          },
+          {
+            "sha": "8a4271a41dfe360463098e665f4ec9d7f1c209ba",
+            "message": "text commit push",
+            "date": "2025-01-17T07:08:55Z",
+            "additions": 155,
+            "deletions": 0,
+            "changed_files": [
+              "assets/checked_box.png",
+              "assets/unchecked_box.png",
+              "lib/screen/button_screen.dart",
+              "lib/screen/checkbox/checkbox_screen.dart",
+              "lib/screen/text/text_form_field_screen.dart"
+            ]
+          },
+          {
+            "sha": "f98353d7e8fe73eaec58ef0d9dbde30f998722d1",
+            "message": "Buttons commit",
+            "date": "2025-01-17T05:38:36Z",
+            "additions": 91,
+            "deletions": 0,
+            "changed_files": [
+              "lib/screen/button_screen.dart",
+              "lib/screen/click/click_screen.dart"
+            ]
+          },
+          {
+            "sha": "7f6cc45d68655ad41f5e7d8af1be69baf0fea049",
+            "message": "stateful commit",
+            "date": "2025-01-17T05:16:37Z",
+            "additions": 92,
+            "deletions": 0,
+            "changed_files": [
+              "lib/screen/button_screen.dart",
+              "lib/screen/stateful/stateful_screen.dart",
+              "lib/screen/stateless/stateless_screen.dart"
+            ]
+          },
+          {
+            "sha": "862779b655f075bfac30e81363b6552a85fd229a",
+            "message": "listview practice second commit",
+            "date": "2025-01-16T07:48:26Z",
+            "additions": 1,
+            "deletions": 1,
+            "changed_files": [
+              "lib/screen/listview/listview_practice_screen.dart"
+            ]
+          },
+          {
+            "sha": "7d18b4a9ebfb347757db40d7ff06f3e55a3f6ac1",
+            "message": "listview practice commit",
+            "date": "2025-01-16T07:36:28Z",
+            "additions": 257,
+            "deletions": 1,
+            "changed_files": [
+              "lib/screen/button_screen.dart",
+              "lib/screen/listview/listview_builder_screen.dart",
+              "lib/screen/listview/listview_practice_screen.dart",
+              "lib/screen/listview/listview_screen.dart",
+              "lib/screen/listview/scrollable",
+              "test/collections.dart"
+            ]
+          },
+          {
+            "sha": "17fc475feea66dd0b2f7136f4bf322f5c044e216",
+            "message": "listview commit",
+            "date": "2025-01-16T07:13:51Z",
+            "additions": 0,
+            "deletions": 0,
+            "changed_files": [
+              "lib/screen/listview/listview_screen.dart"
+            ]
+          },
+          {
+            "sha": "83c24752159ccc05585ff9b2a50d8f0199015d0d",
+            "message": "set commit",
+            "date": "2025-01-16T06:51:40Z",
+            "additions": 1,
+            "deletions": 1,
+            "changed_files": [
+              "test/collections.dart"
+            ]
+          },
+          {
+            "sha": "d6e7bbf0d0d554e3b62ea76a95c69d34b54665da",
+            "message": "map and set practice commit",
+            "date": "2025-01-16T06:48:07Z",
+            "additions": 55,
+            "deletions": 1,
+            "changed_files": [
+              "test/collections.dart",
+              "test/widget_test.dart"
+            ]
+          },
+          {
+            "sha": "17ba8a39f7ccfcb87f4e7ba3b8293cedad8b556c",
+            "message": "list practice commit",
+            "date": "2025-01-16T06:28:21Z",
+            "additions": 54,
+            "deletions": 0,
+            "changed_files": [
+              "test/collections.dart",
+              "test/widget_test.dart"
+            ]
+          },
+          {
+            "sha": "fc0c539e7977702e393c427a2b25ff739e3d163f",
+            "message": "test widget commit",
+            "date": "2025-01-16T05:50:11Z",
+            "additions": 438,
+            "deletions": 85,
+            "changed_files": [
+              "lib/screen/button_screen.dart",
+              "lib/screen/image/image_screen.dart",
+              "lib/screen/stack/stack_practice_screen.dart",
+              "lib/screen/stack/stack_screen.dart",
+              "lib/screen/text/text_screen.dart",
+              "lib/screen/text/text_screen_practice.dart",
+              "pubspec.yaml",
+              "test/widget_test.dart"
+            ]
+          },
+          {
+            "sha": "cd238f047cb43ce5d0ffcc2a3db39a6cc1fab7a9",
+            "message": "fourth commit",
+            "date": "2025-01-16T05:21:03Z",
+            "additions": 0,
+            "deletions": 0,
+            "changed_files": [
+              "lib/screen/stack/stack_practice_screen.dart"
+            ]
+          },
+          {
+            "sha": "ddca2412eed5229e5fafdaefefb8e7c93bb78adb",
+            "message": "stack add commit",
+            "date": "2025-01-16T05:16:19Z",
+            "additions": 0,
+            "deletions": 0,
+            "changed_files": [
+              "lib/screen/stack/stack_screen.dart"
+            ]
+          },
+          {
+            "sha": "d9ceafc5cc881e1b7596bfdfc992a87bd115ec3d",
+            "message": "second commit",
+            "date": "2025-01-15T07:46:52Z",
+            "additions": 0,
+            "deletions": 0,
+            "changed_files": [
+              "assets/lecture_flutter_image.png",
+              "lib/screen/image/image_screen.dart",
+              "lib/screen/text/text_screen.dart",
+              "lib/screen/text/text_screen_practice.dart"
+            ]
+          },
+          {
+            "sha": "87c0b69cee0d0782fee2d19159ebf7d4480037b6",
+            "message": "first commit",
+            "date": "2025-01-15T06:21:13Z",
+            "additions": 2263,
+            "deletions": 0,
+            "changed_files": [
+              ".gitignore",
+              ".metadata",
+              "README.md",
+              "analysis_options.yaml",
+              "android/.gitignore",
+              "android/app/build.gradle",
+              "android/app/src/debug/AndroidManifest.xml",
+              "android/app/src/main/AndroidManifest.xml",
+              "android/app/src/main/kotlin/com/example/online_lecture_smwu/MainActivity.kt",
+              "android/app/src/main/res/drawable-v21/launch_background.xml",
+              "android/app/src/main/res/drawable/launch_background.xml",
+              "android/app/src/main/res/mipmap-hdpi/ic_launcher.png",
+              "android/app/src/main/res/mipmap-mdpi/ic_launcher.png",
+              "android/app/src/main/res/mipmap-xhdpi/ic_launcher.png",
+              "android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png",
+              "android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png",
+              "android/app/src/main/res/values-night/styles.xml",
+              "android/app/src/main/res/values/styles.xml",
+              "android/app/src/profile/AndroidManifest.xml",
+              "android/build.gradle"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repo_name": "conflicttest",
+      "full_name": "EunjinLee08/conflicttest",
+      "html_url": "https://github.com/EunjinLee08/conflicttest",
+      "description": null,
+      "created_at": "2025-01-19T11:52:15Z",
+      "updated_at": "2025-01-19T11:56:00Z",
+      "pushed_at": "2025-01-19T12:06:40Z",
+      "stars": 0,
+      "forks": 0,
+      "watchers": 0,
+      "open_issues": 0,
+      "default_branch": "a",
+      "main_language": null,
+      "languages": {},
+      "readme_summary_source": "conflict a\n",
+      "file_tree_sample": [
+        {
+          "path": "README.md",
+          "size": 11
+        }
+      ],
+      "framework_library_analysis": {
+        "dependency_files": [],
+        "detected_frameworks_libraries": {
+          "frontend": [],
+          "backend": [],
+          "ai_ml": [],
+          "database": [],
+          "devops": [],
+          "security": []
+        },
+        "project_signals": {
+          "has_docker": false,
+          "has_github_actions": false,
+          "has_tests": false,
+          "has_frontend_config": false,
+          "has_python_project": false,
+          "has_java_project": false,
+          "has_rust_project": false
+        }
+      },
+      "contribution": {
+        "commit_count_sampled": 2,
+        "total_additions_sampled": 1,
+        "total_deletions_sampled": 0,
+        "top_touched_files": [
+          {
+            "path": "README.md",
+            "change_count": 2,
+            "additions": 1,
+            "deletions": 0
+          }
+        ],
+        "recent_commits": [
+          {
+            "sha": "f58a7abb9f4a46403aecfaf6a69ba5c8d7d93563",
+            "message": "a",
+            "date": "2025-01-19T11:55:49Z",
+            "additions": 1,
+            "deletions": 0,
+            "changed_files": [
+              "README.md"
+            ]
+          },
+          {
+            "sha": "ecf2ce46ae48b8c7b421df921eaca0a138a24139",
+            "message": "initial commit",
+            "date": "2025-01-19T11:55:01Z",
+            "additions": 0,
+            "deletions": 0,
+            "changed_files": [
+              "README.md"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repo_name": "branchtest",
+      "full_name": "EunjinLee08/branchtest",
+      "html_url": "https://github.com/EunjinLee08/branchtest",
+      "description": null,
+      "created_at": "2025-01-19T11:27:37Z",
+      "updated_at": "2025-01-19T11:50:05Z",
+      "pushed_at": "2025-01-19T11:50:03Z",
+      "stars": 0,
+      "forks": 0,
+      "watchers": 0,
+      "open_issues": 0,
+      "default_branch": "main",
+      "main_language": null,
+      "languages": {},
+      "readme_summary_source": "# branchtest\n* con 1\n* con 2 \n* con 3",
+      "file_tree_sample": [
+        {
+          "path": "README.md",
+          "size": 37
+        },
+        {
+          "path": "binkybranch.txt",
+          "size": 13
+        },
+        {
+          "path": "garybranch.txt",
+          "size": 13
+        },
+        {
+          "path": "restoretest.txt",
+          "size": 6
+        }
+      ],
+      "framework_library_analysis": {
+        "dependency_files": [],
+        "detected_frameworks_libraries": {
+          "frontend": [],
+          "backend": [],
+          "ai_ml": [],
+          "database": [],
+          "devops": [],
+          "security": []
+        },
+        "project_signals": {
+          "has_docker": false,
+          "has_github_actions": false,
+          "has_tests": false,
+          "has_frontend_config": false,
+          "has_python_project": false,
+          "has_java_project": false,
+          "has_rust_project": false
+        }
+      },
+      "contribution": {
+        "commit_count_sampled": 8,
+        "total_additions_sampled": 12,
+        "total_deletions_sampled": 3,
+        "top_touched_files": [
+          {
+            "path": "README.md",
+            "change_count": 4,
+            "additions": 7,
+            "deletions": 3
+          },
+          {
+            "path": "binkybranch.txt",
+            "change_count": 2,
+            "additions": 2,
+            "deletions": 0
+          },
+          {
+            "path": "restoretest.txt",
+            "change_count": 2,
+            "additions": 2,
+            "deletions": 0
+          },
+          {
+            "path": "garybranch.txt",
+            "change_count": 1,
+            "additions": 1,
+            "deletions": 0
+          }
+        ],
+        "recent_commits": [
+          {
+            "sha": "ce4a3424507e9ee622dcaaf746784daad283956c",
+            "message": "Merge branch 'main' of https://github.com/EunjinLee08/branchtest",
+            "date": "2025-01-19T11:49:35Z",
+            "additions": 2,
+            "deletions": 0,
+            "changed_files": [
+              "binkybranch.txt",
+              "restoretest.txt"
+            ]
+          },
+          {
+            "sha": "d3af20235510afec3e3b48e14854ebb995ce1ff5",
+            "message": "restore test",
+            "date": "2025-01-19T11:41:13Z",
+            "additions": 1,
+            "deletions": 0,
+            "changed_files": [
+              "restoretest.txt"
+            ]
+          },
+          {
+            "sha": "43163ada7b6a91b54c347b99c11eb31080276f6c",
+            "message": "binky 1",
+            "date": "2025-01-19T11:38:08Z",
+            "additions": 1,
+            "deletions": 0,
+            "changed_files": [
+              "binkybranch.txt"
+            ]
+          },
+          {
+            "sha": "968cb069a43b0a2eb7c305fc350bfcf28dc29016",
+            "message": "gary 1",
+            "date": "2025-01-19T11:33:24Z",
+            "additions": 1,
+            "deletions": 0,
+            "changed_files": [
+              "garybranch.txt"
+            ]
+          },
+          {
+            "sha": "db685dca85fbf67ce5888dfbb8705434ec2f2708",
+            "message": "con 3",
+            "date": "2025-01-19T11:31:05Z",
+            "additions": 2,
+            "deletions": 1,
+            "changed_files": [
+              "README.md"
+            ]
+          },
+          {
+            "sha": "fbde813834870a387c7dcda199391cbae4a6bac0",
+            "message": "con 2",
+            "date": "2025-01-19T11:30:43Z",
+            "additions": 2,
+            "deletions": 1,
+            "changed_files": [
+              "README.md"
+            ]
+          },
+          {
+            "sha": "2219856ebe04849e63c2ffca34bb3211865ac4d3",
+            "message": "con 1",
+            "date": "2025-01-19T11:30:18Z",
+            "additions": 2,
+            "deletions": 1,
+            "changed_files": [
+              "README.md"
+            ]
+          },
+          {
+            "sha": "2069a549b5bd41b7e2c60d4c47560a1bac753bcb",
+            "message": "Initial commit",
+            "date": "2025-01-19T11:27:37Z",
+            "additions": 1,
+            "deletions": 0,
+            "changed_files": [
+              "README.md"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "repo_name": "testrepo",
+      "full_name": "EunjinLee08/testrepo",
+      "html_url": "https://github.com/EunjinLee08/testrepo",
+      "description": null,
+      "created_at": "2025-01-12T09:49:12Z",
+      "updated_at": "2025-01-12T10:17:53Z",
+      "pushed_at": "2025-01-12T10:17:50Z",
+      "stars": 0,
+      "forks": 0,
+      "watchers": 0,
+      "open_issues": 0,
+      "default_branch": "main",
+      "main_language": "HTML",
+      "languages": {
+        "HTML": 69
+      },
+      "readme_summary_source": "# testrepo\n* github_ex have modified it",
+      "file_tree_sample": [
+        {
+          "path": "README.md",
+          "size": 39
+        },
+        {
+          "path": "index.html",
+          "size": 21
+        },
+        {
+          "path": "test/index.html",
+          "size": 21
+        },
+        {
+          "path": "test2/index.html",
+          "size": 27
+        },
+        {
+          "path": "디아블로 IV 2025-01-07 오후 3_02_08.png",
+          "size": 5878590
+        }
+      ],
+      "framework_library_analysis": {
+        "dependency_files": [],
+        "detected_frameworks_libraries": {
+          "frontend": [],
+          "backend": [],
+          "ai_ml": [],
+          "database": [],
+          "devops": [],
+          "security": []
+        },
+        "project_signals": {
+          "has_docker": false,
+          "has_github_actions": false,
+          "has_tests": true,
+          "has_frontend_config": false,
+          "has_python_project": false,
+          "has_java_project": false,
+          "has_rust_project": false
+        }
+      },
+      "contribution": {
+        "commit_count_sampled": 6,
+        "total_additions_sampled": 5,
+        "total_deletions_sampled": 0,
+        "top_touched_files": [
+          {
+            "path": "README.md",
+            "change_count": 2,
+            "additions": 2,
+            "deletions": 0
+          },
+          {
+            "path": "디아블로 IV 2025-01-07 오후 3_02_08.png",
+            "change_count": 1,
+            "additions": 0,
+            "deletions": 0
+          },
+          {
+            "path": "test2/index.html",
+            "change_count": 1,
+            "additions": 1,
+            "deletions": 0
+          },
+          {
+            "path": "index.html",
+            "change_count": 1,
+            "additions": 1,
+            "deletions": 0
+          },
+          {
+            "path": "test/index.html",
+            "change_count": 1,
+            "additions": 1,
+            "deletions": 0
+          }
+        ],
+        "recent_commits": [
+          {
+            "sha": "022899ca97cb9b96993e656648ad8adf7f353483",
+            "message": "수정 README.md에 내용추가",
+            "date": "2025-01-12T10:17:42Z",
+            "additions": 1,
+            "deletions": 0,
+            "changed_files": [
+              "README.md"
+            ]
+          },
+          {
+            "sha": "f7a3934bd54b0eaedaf2c13226580df41ec15bca",
+            "message": "이미지 추가",
+            "date": "2025-01-12T10:09:31Z",
+            "additions": 0,
+            "deletions": 0,
+            "changed_files": [
+              "디아블로 IV 2025-01-07 오후 3_02_08.png"
+            ]
+          },
+          {
+            "sha": "b4075b22fc5722abcb23993dfb89688f2c8bbfc1",
+            "message": "Create index.html",
+            "date": "2025-01-12T09:58:20Z",
+            "additions": 1,
+            "deletions": 0,
+            "changed_files": [
+              "test2/index.html"
+            ]
+          },
+          {
+            "sha": "64a5d8c3a774594c40fc8abdc7e6f77a06a797d2",
+            "message": "Create index.html",
+            "date": "2025-01-12T09:57:51Z",
+            "additions": 1,
+            "deletions": 0,
+            "changed_files": [
+              "index.html"
+            ]
+          },
+          {
+            "sha": "4ef457896987290dbbb7b502e0f1236596b56703",
+            "message": "Create index.html",
+            "date": "2025-01-12T09:53:51Z",
+            "additions": 1,
+            "deletions": 0,
+            "changed_files": [
+              "test/index.html"
+            ]
+          },
+          {
+            "sha": "93bbab923b88353bb518f9d4f4b1cf38e2f2330c",
+            "message": "first commit",
+            "date": "2025-01-12T09:51:02Z",
+            "additions": 1,
+            "deletions": 0,
+            "changed_files": [
+              "README.md"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
