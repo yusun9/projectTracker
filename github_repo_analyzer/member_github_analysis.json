@@ -1,0 +1,64 @@
+{
+    "yusun9": {
+        "profile_url": "https://github.com/yusun9",
+        "scanned_repositories": [
+            {
+                "repo_name": "CSP_advanced",
+                "url": "https://github.com/yusun9/CSP_advanced",
+                "inferred_tech": {
+                    "dependency_files": [],
+                    "detected_frameworks_libraries": {
+                        "frontend": [
+                            "bootstrap"
+                        ],
+                        "backend": [],
+                        "ai_ml": [],
+                        "database": [],
+                        "devops": [],
+                        "security": []
+                    },
+                    "project_signals": {
+                        "has_docker": false,
+                        "has_github_actions": false,
+                        "has_tests": false,
+                        "has_frontend_config": false,
+                        "has_python_project": false,
+                        "has_java_project": false,
+                        "has_rust_project": false
+                    }
+                }
+            },
+            {
+                "repo_name": "smwu_flutter",
+                "url": "https://github.com/yusun9/smwu_flutter",
+                "inferred_tech": {
+                    "dependency_files": [
+                        "android/app/build.gradle",
+                        "android/build.gradle"
+                    ],
+                    "detected_frameworks_libraries": {
+                        "frontend": [],
+                        "backend": [
+                            "gin"
+                        ],
+                        "ai_ml": [],
+                        "database": [],
+                        "devops": [
+                            "ci"
+                        ],
+                        "security": []
+                    },
+                    "project_signals": {
+                        "has_docker": false,
+                        "has_github_actions": false,
+                        "has_tests": true,
+                        "has_frontend_config": false,
+                        "has_python_project": false,
+                        "has_java_project": true,
+                        "has_rust_project": false
+                    }
+                }
+            }
+        ]
+    }
+}

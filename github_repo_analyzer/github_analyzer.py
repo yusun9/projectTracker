@@ -13,6 +13,9 @@ from urllib.parse import urlparse
 import requests
 from dotenv import load_dotenv
 
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+
 load_dotenv()
 
 
@@ -500,13 +503,84 @@ class GitHubAnalyzer:
 
         return result
 
+# =================================================================
+# 🚀 프론트엔드 연동용 Flask 웹 서버 코드 (새로 추가된 영역)
+# =================================================================
 
+app = Flask(__name__)
+CORS(app)  # HTML 파일이 다른 포트에서 열려도 통신이 가능하도록 허용 (CORS 해결)
+
+@app.route('/api/analyze-members', methods=['POST'])
+def analyze_members():
+    try:
+        # 1. form.html에서 쏜 데이터 받기
+        data = request.json
+        member_urls = data.get('member_github_urls', [])
+        
+        if not member_urls:
+            return jsonify({"status": "error", "message": "분석할 깃허브 링크가 없습니다."}), 400
+
+        analyzer = GitHubAnalyzer()
+        analysis_results = {}
+
+        # 2. 받아온 링크 순회하며 팀원 A의 로직으로 깃허브 스캔
+        for url in member_urls:
+            if not url or 'github.com' not in url:
+                continue
+            
+            try:
+                username = analyzer.extract_username(url)
+                print(f"🔄 분석 중: {username} ({url})...")
+                
+                repos = analyzer.get_public_repos(username, max_repos=5)
+                repo_list_data = []
+
+                for repo in repos:
+                    repo_name = repo.get("name")
+                    default_branch = repo.get("default_branch", "main")
+                    
+                    # 간단한 분석 이력 수집
+                    file_tree = analyzer.get_file_tree(username, repo_name, default_branch)
+                    readme = analyzer.get_readme(username, repo_name)
+                    tech_stack = analyzer.infer_frameworks_and_libraries(username, repo_name, file_tree, readme)
+                    
+                    repo_list_data.append({
+                        "repo_name": repo_name,
+                        "url": repo.get("html_url"),
+                        "inferred_tech": tech_stack
+                    })
+
+                analysis_results[username] = {
+                    "profile_url": url,
+                    "scanned_repositories": repo_list_data
+                }
+            except Exception as e:
+                print(f"❌ {url} 분석 중 오류 발생: {e}")
+                analysis_results[url] = {"status": "failed", "error": str(e)}
+
+        # 3. 로컬에 json 파일로 저장하기
+        output_filename = "member_github_analysis.json"
+        with open(output_filename, "w", encoding="utf-8") as f:
+            json.dump(analysis_results, f, ensure_ascii=False, indent=4)
+
+        return jsonify({
+            "status": "success",
+            "message": f"성공적으로 {len(analysis_results)}명의 팀원 분석을 완료하고 {output_filename}에 저장했습니다.",
+            "data": analysis_results
+        })
+
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+    
 def save_json(data: Dict[str, Any], output_path: str) -> None:
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
 if __name__ == "__main__":
+    #500번 포트에서 서버 오픈...
+    app.run(host='0.0.0.0', port=5000, debug=True)
+
     analyzer = GitHubAnalyzer()
 
     github_url = input("GitHub profile URL을 입력하세요: ").strip()
